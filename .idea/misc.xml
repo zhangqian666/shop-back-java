@@ -1,5 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="FUSUsageTrigger">
+    <session id="-2003711230">
+      <usages-collector id="statistics.spring.boot.mvc.usages">
+        <counts>
+          <entry key="RestClientRequestRunnerNavigator.fromCode" value="2" />
+        </counts>
+      </usages-collector>
+    </session>
+  </component>
   <component name="MavenProjectsManager">
     <option name="originalFiles">
       <list>

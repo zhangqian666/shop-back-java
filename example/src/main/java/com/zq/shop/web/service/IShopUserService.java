@@ -1,0 +1,21 @@
+package com.zq.shop.web.service;
+
+import com.zq.core.restful.ServerResponse;
+import com.zq.shop.web.bean.ShopUser;
+
+/**
+ * @Author 张迁-zhangqian
+ * @Data 2018/4/21 下午2:34
+ * @Package com.zq.shop.web.service
+ **/
+
+
+public interface IShopUserService {
+    ServerResponse register(ShopUser shopUser);
+
+    ServerResponse<ShopUser> getUserInfo(String username);
+
+    ServerResponse updateUserImage(String uploadFile, String username);
+
+    ServerResponse updateUserPassword(String password, String name);
+}

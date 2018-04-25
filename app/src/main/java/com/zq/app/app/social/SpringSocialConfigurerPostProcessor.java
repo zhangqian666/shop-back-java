@@ -8,6 +8,8 @@ import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.stereotype.Component;
 
 /**
+ * 用code进行社交登录 获取accesstoken后 去本地验证 如果验证不通过跳转的地址
+ *
  * @Author 张迁-zhangqian
  * @Data 2018/4/10 下午1:27
  * @Package com.zq.app.app.social

@@ -15,7 +15,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.codec.Base64;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;
-import org.springframework.security.oauth2.common.exceptions.UnapprovedClientAuthenticationException;
 import org.springframework.security.oauth2.provider.*;
 import org.springframework.security.oauth2.provider.token.AuthorizationServerTokenServices;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
@@ -120,11 +119,13 @@ public class ZqAuthenticationSuccessHandler extends SavedRequestAwareAuthenticat
     public OAuth2AccessToken getToken(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException {
         String header = request.getHeader("Authorization");
 
+        String[] tokens = null;
         if (header == null || !header.startsWith("Basic ")) {
-            throw new UnapprovedClientAuthenticationException("请求头中无client信息");
+            tokens = new String[]{"defaultClient", "defaultSecret"};
+        } else {
+            tokens = extractAndDecodeHeader(header, request);
         }
 
-        String[] tokens = extractAndDecodeHeader(header, request);
         assert tokens.length == 2;
 
         String clientId = tokens[0];

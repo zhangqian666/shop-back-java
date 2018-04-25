@@ -1,8 +1,8 @@
 package com.zq.core.social;
 
 import com.zq.core.properties.SecurityProperties;
-import com.zq.core.social.support.ZqSpringSocialConfigurer;
 import com.zq.core.social.support.SocialAuthenticationFilterPostProcessor;
+import com.zq.core.social.support.ZqSpringSocialConfigurer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
@@ -16,7 +16,6 @@ import org.springframework.social.connect.UsersConnectionRepository;
 import org.springframework.social.connect.jdbc.JdbcUsersConnectionRepository;
 import org.springframework.social.connect.web.ProviderSignInUtils;
 import org.springframework.social.security.SpringSocialConfigurer;
-import org.springframework.social.security.provider.SocialAuthenticationService;
 
 import javax.sql.DataSource;
 
@@ -48,7 +47,7 @@ public class SocialConfig extends SocialConfigurerAdapter {
     public UsersConnectionRepository getUsersConnectionRepository(ConnectionFactoryLocator connectionFactoryLocator) {
         JdbcUsersConnectionRepository repository = new JdbcUsersConnectionRepository(dataSource,
                 connectionFactoryLocator, Encryptors.noOpText());
-//        repository.setTablePrefix("imooc_");
+        repository.setTablePrefix("zq_");
         if (connectionSignUp != null) {
             repository.setConnectionSignUp(connectionSignUp);
         }

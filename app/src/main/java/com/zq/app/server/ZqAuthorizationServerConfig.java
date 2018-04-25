@@ -1,30 +1,22 @@
 package com.zq.app.server;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.zq.core.properties.SecurityProperties;
 import com.zq.core.properties.oauth2.OAuth2ClientProperties;
-import com.zq.core.restful.ServerResponse;
 import org.apache.commons.lang.ArrayUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.oauth2.common.exceptions.OAuth2Exception;
 import org.springframework.security.oauth2.config.annotation.builders.InMemoryClientDetailsServiceBuilder;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
-import org.springframework.security.oauth2.provider.error.WebResponseExceptionTranslator;
 import org.springframework.security.oauth2.provider.token.TokenEnhancer;
 import org.springframework.security.oauth2.provider.token.TokenEnhancerChain;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
-import org.springframework.security.web.AuthenticationEntryPoint;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -103,6 +95,12 @@ public class ZqAuthorizationServerConfig extends AuthorizationServerConfigurerAd
     @Override
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
         InMemoryClientDetailsServiceBuilder builder = clients.inMemory();
+        builder.withClient("defaultClient")
+                .secret("defaultSecret")
+                .authorizedGrantTypes("refresh_token", "authorization_code", "password")
+                .accessTokenValiditySeconds(-1)
+                .refreshTokenValiditySeconds(2592000)
+                .scopes("all");
 
         if (ArrayUtils.isNotEmpty(securityProperties.getOauth2Properties().getClients())) {
             for (OAuth2ClientProperties client : securityProperties.getOauth2Properties().getClients()) {

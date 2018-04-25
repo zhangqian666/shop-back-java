@@ -3,14 +3,12 @@ package com.zq.core.authentication.mobile;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang.StringUtils;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 
 /**
  * @Author 张迁-zhangqian
@@ -36,7 +34,7 @@ public class SmsCodeAuthenticationProvider implements AuthenticationProvider {
             throw new InternalAuthenticationServiceException("无法获取应用用户信息");
         }
 
-        SmsCodeAuthenticationToken authenticationResult = new SmsCodeAuthenticationToken(user, user.getAuthorities());
+        SmsCodeAuthenticationToken authenticationResult = new SmsCodeAuthenticationToken(user.getUsername(), user.getAuthorities());
 
         authenticationResult.setDetails(authenticationToken.getDetails());
 

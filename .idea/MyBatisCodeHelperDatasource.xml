@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="MyBatisCodeHelperDatasource">
+    <option name="activeDatabaseInfo">
+      <NewDatabaseInfo>
+        <option name="database" value="shop" />
+        <option name="databaseType" value="MySql" />
+        <option name="password" value="123456_aA" />
+        <option name="url" value="39.106.46.79:3306" />
+        <option name="userName" value="root" />
+      </NewDatabaseInfo>
+    </option>
+    <option name="databaseInfos">
+      <list>
+        <NewDatabaseInfo>
+          <option name="database" value="shop" />
+          <option name="databaseType" value="MySql" />
+          <option name="password" value="123456_aA" />
+          <option name="url" value="39.106.46.79:3306" />
+          <option name="userName" value="root" />
+        </NewDatabaseInfo>
+      </list>
+    </option>
+  </component>
+</project>

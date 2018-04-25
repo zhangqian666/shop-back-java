@@ -1,6 +1,7 @@
 package com.zq.shop.exception;
 
 import com.zq.core.restful.ServerResponse;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.*;
@@ -20,9 +21,9 @@ public class ExampleExceptionHandler {
     @ExceptionHandler(value = Exception.class)
     public ServerResponse errorHandler(Exception e) {
         e.printStackTrace();
-        int code = 0;
+        int code;
         if (e instanceof NoHandlerFoundException) {
-            code = 404;
+            code = HttpStatus.BAD_REQUEST.value();
         } else {
             code = 500;
         }
