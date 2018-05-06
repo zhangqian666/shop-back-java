@@ -45,27 +45,27 @@ public class ShopUserServiceImpl implements IShopUserService {
         shopUser.setPassword(passwordEncoder.encode(shopUser.getPassword()));
         //生成 用户ID
         shopUser.setUid(idMapper.findId(Const.IDType.USER_ID));
+
         int resultCount = shopUserMapper.insert(shopUser);
         if (resultCount == 0) {
             return ServerResponse.createByErrorMessage("注册失败");
         }
-        List<ShopUser> byPhone = shopUserMapper.findByPhone(shopUser.getPhone());
 
-        return ServerResponse.createBySuccess("注册成功", byPhone.get(0));
+        return ServerResponse.createBySuccess("注册成功", shopUser);
     }
 
     private ServerResponse available(String username, String type) {
         if (StringUtils.isNoneBlank(type)) {
             //开始校验
             if (Const.User.EMAIL.equals(type)) {
-                int resultCount = shopUserMapper.findByEmail(username).size();
-                if (resultCount > 0) {
+                ShopUser resultData = shopUserMapper.findOneByEmail(username);
+                if (resultData == null) {
                     return ServerResponse.createByErrorMessage("email已存在");
                 }
             }
             if (Const.User.PHONE.equals(type)) {
-                int resultCount = shopUserMapper.findByPhone(username).size();
-                if (resultCount > 0) {
+                ShopUser resultData = shopUserMapper.findOneByPhone(username);
+                if (resultData == null) {
                     return ServerResponse.createByErrorMessage("手机号已存在");
                 }
             }
@@ -87,16 +87,17 @@ public class ShopUserServiceImpl implements IShopUserService {
     }
 
     @Override
-    public ServerResponse updateUserImage(String uploadFile, String name) {
-        if (shopUserMapper.updateImageByPhone(uploadFile, name) == 0) {
+    public ServerResponse updateUserImage(String uploadFile, Integer userId) {
+        if (shopUserMapper.updateImageByUid(uploadFile, userId) == 0) {
             return ServerResponse.createByErrorMessage("更新失败");
         }
+
         return ServerResponse.createBySuccess("更新头像成功", uploadFile);
     }
 
     @Override
-    public ServerResponse updateUserPassword(String password, String name) {
-        if (shopUserMapper.updatePasswordByPhone(password, name) == 0) {
+    public ServerResponse updateUserPassword(String password, Integer userId) {
+        if (shopUserMapper.updatePasswordByUid(password, userId) == 0) {
             return ServerResponse.createByErrorMessage("修改密码失败");
         }
         return ServerResponse.createBySuccessMessage("修改密码成功");

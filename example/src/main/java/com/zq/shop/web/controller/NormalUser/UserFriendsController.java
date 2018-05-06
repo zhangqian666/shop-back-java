@@ -1,5 +1,6 @@
 package com.zq.shop.web.controller.NormalUser;
 
+import com.zq.app.server.DefaultUserDetails;
 import com.zq.core.restful.ServerResponse;
 import com.zq.shop.web.bean.ShopUser;
 import com.zq.shop.web.service.IShopUserService;
@@ -8,6 +9,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -38,17 +40,14 @@ public class UserFriendsController {
 
     @ApiOperation("添加好友")
     @GetMapping("/create")
-    public ServerResponse create(Authentication authentication, Integer followId) {
-        ShopUser shopUser = iShopUserService.getUserInfo(authentication.getName()).getData();
+    public ServerResponse create(@AuthenticationPrincipal DefaultUserDetails defaultUserDetails, Integer followId) {
 
-        return iUserFriendsService.create(shopUser.getUid(), followId);
+        return iUserFriendsService.create(defaultUserDetails.getUid(), followId);
     }
 
     @ApiOperation("删除")
     @GetMapping("/delete")
-    public ServerResponse delete(Authentication authentication, Integer followId) {
-        ShopUser shopUser = iShopUserService.getUserInfo(authentication.getName()).getData();
-
-        return iUserFriendsService.delete(shopUser.getUid(), followId);
+    public ServerResponse delete(@AuthenticationPrincipal DefaultUserDetails defaultUserDetails, Integer followId) {
+        return iUserFriendsService.delete(defaultUserDetails.getUid(), followId);
     }
 }

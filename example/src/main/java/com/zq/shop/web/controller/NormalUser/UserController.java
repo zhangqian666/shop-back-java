@@ -13,7 +13,6 @@ import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -77,17 +76,18 @@ public class UserController {
     @ApiOperation("更新用户头像")
     @PostMapping("/update/image")
     public ServerResponse updateUserImage(@RequestParam("upload_file") MultipartFile file,
-                                          Authentication authentication,
+                                          @AuthenticationPrincipal DefaultUserDetails defaultUserDetails,
                                           HttpServletRequest httpServletRequest) {
         String path = httpServletRequest.getSession().getServletContext().getRealPath("upload");
         String uploadFile = iFileService.uploadFile(file, path);
-        return iShopUserService.updateUserImage(uploadFile, authentication.getName());
+        return iShopUserService.updateUserImage(uploadFile, defaultUserDetails.getUid());
     }
 
     @ApiOperation("修改密码")
     @PostMapping("/update/password")
-    public ServerResponse updateUserPassword(Authentication authorization, String password) {
-        return iShopUserService.updateUserPassword(password, authorization.getName());
+    public ServerResponse updateUserPassword(
+            @AuthenticationPrincipal DefaultUserDetails defaultUserDetails, String password) {
+        return iShopUserService.updateUserPassword(password, defaultUserDetails.getUid());
     }
 
 }
