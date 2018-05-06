@@ -1,20 +1,17 @@
 package com.zq.shop.configs;
 
+import com.zq.app.server.DefaultUserDetails;
 import com.zq.shop.web.bean.ShopUser;
 import com.zq.shop.web.mappers.ShopUserMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.social.security.SocialUser;
 import org.springframework.social.security.SocialUserDetails;
 import org.springframework.social.security.SocialUserDetailsService;
 import org.springframework.stereotype.Component;
-
-import java.util.List;
 
 /**
  * @Author 张迁-zhangqian
@@ -31,28 +28,34 @@ public class ExampleSocialUserDetailsService implements UserDetailsService, Soci
     private PasswordEncoder passwordEncoder;
 
     @Override
-    public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
-        log.info("UserDetails获取用户信息" + s);
-        return buildUser(s);
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        log.info("UserDetails获取用户信息" + username);
+        return buildUser(username, true);
     }
 
     @Override
     public SocialUserDetails loadUserByUserId(String s) throws UsernameNotFoundException {
         log.info("SocialUserDetails获取用户信息" + s);
-        return buildUser(s);
+        return buildUser(s, false);
     }
 
-    private SocialUserDetails buildUser(String userId) {
-        // 根据用户名查找用户信息
-        //根据查找到的用户信息判断用户是否被冻结
-        List<ShopUser> byPhone = shopUserMapper.findByPhone(userId);
-        if (byPhone.size() == 0) {
+    /**
+     * @param userId
+     * @param isUserDetails true 用 username去查询账号信息； false 用uid去查询用户
+     * @return
+     */
+    private SocialUserDetails buildUser(String userId, boolean isUserDetails) {
+        ShopUser shopUser;
+        if (isUserDetails) {
+            shopUser = shopUserMapper.findOneByPhone(userId);
+
+        } else {
+            shopUser = shopUserMapper.selectByPrimaryKey(Integer.valueOf(userId));
+        }
+        if (shopUser == null) {
             throw new UsernameNotFoundException("用户不存在");
         }
-        ShopUser shopUser = byPhone.get(0);
-        return new SocialUser(shopUser.getPhone(), shopUser.getPassword(),
-                true, true, true, true,
-                AuthorityUtils.commaSeparatedStringToAuthorityList("ROLE_ADMIN"));
+        return new DefaultUserDetails(shopUser.getUid(), shopUser.getPhone(), shopUser.getPassword());
     }
 
 

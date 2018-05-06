@@ -46,6 +46,9 @@ public class OrderServiceImpl implements IOrderService {
     @Autowired
     private ShippingMapper shippingMapper;
 
+    @Autowired
+    private IDMapper idMapper;
+
     @Transactional//开启事务  防止插入删除后
     public ServerResponse createOrder(Integer userId, Integer shippingId) {
 

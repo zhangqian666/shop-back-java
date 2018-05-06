@@ -3,6 +3,8 @@ package com.zq.shop.web.service.impl;
 import com.google.common.collect.Maps;
 import com.zq.core.restful.ServerResponse;
 import com.zq.shop.web.bean.Shipping;
+import com.zq.shop.web.common.Const;
+import com.zq.shop.web.mappers.IDMapper;
 import com.zq.shop.web.mappers.ShippingMapper;
 import com.zq.shop.web.service.IShippingService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,8 +27,12 @@ public class ShippingServiceImpl implements IShippingService {
     @Autowired
     private ShippingMapper shippingMapper;
 
+    @Autowired
+    private IDMapper idMapper;
+
     public ServerResponse add(Integer userId, Shipping shipping) {
         shipping.setUserId(userId);
+        shipping.setId(idMapper.findId(Const.IDType.SHIPPING_ID));
         int rowCount = shippingMapper.insert(shipping);
         if (rowCount > 0) {
             Map result = Maps.newHashMap();

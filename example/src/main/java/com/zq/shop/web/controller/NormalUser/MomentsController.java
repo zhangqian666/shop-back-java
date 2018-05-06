@@ -40,26 +40,27 @@ public class MomentsController {
     public ServerResponse momentsList(Authentication authentication, Integer uid) {
         ServerResponse<ShopUser> userInfo = iShopUserService.getUserInfo(authentication.getName());
         return iMomentsService.list(uid);
+
     }
 
     @ApiOperation("创建文章")
     @PostMapping("/create")
     public ServerResponse createMoments(Authentication authentication, Moments moments) {
         ServerResponse<ShopUser> userInfo = iShopUserService.getUserInfo(authentication.getName());
-        return iMomentsService.create(moments);
+        return iMomentsService.create(moments, userInfo.getData().getUid());
     }
 
     @ApiOperation("获取文章详情")
     @PostMapping("/details")
     public ServerResponse momentsDetails(Authentication authentication, Integer momentId) {
         ServerResponse<ShopUser> userInfo = iShopUserService.getUserInfo(authentication.getName());
-        return iMomentsService.details(momentId);
+        return iMomentsService.details(momentId, userInfo.getData().getUid());
     }
 
     @ApiOperation("评论")
     @PostMapping("/comment/create")
     public ServerResponse createMomentsComment(Authentication authentication, MomentsComment momentsComment) {
         ServerResponse<ShopUser> userInfo = iShopUserService.getUserInfo(authentication.getName());
-        return iMomentsCommentService.create(momentsComment);
+        return iMomentsCommentService.create(momentsComment, userInfo.getData().getUid());
     }
 }

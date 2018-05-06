@@ -1,14 +1,20 @@
 package com.zq.shop.web.controller.NormalUser;
 
 import com.zq.app.app.social.AppSignUpUtils;
+import com.zq.app.server.DefaultUserDetails;
 import com.zq.core.restful.ServerResponse;
 import com.zq.shop.web.bean.ShopUser;
 import com.zq.shop.web.service.IFileService;
 import com.zq.shop.web.service.IShopUserService;
-import io.swagger.annotations.*;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -30,7 +36,7 @@ import javax.servlet.http.HttpServletRequest;
  * @ApiImplicitParam：一个请求参数
  * @ApiImplicitParams：多个请求参数
  **/
-
+@Slf4j
 @Api(tags = "用户管理")
 @RestController
 @RequestMapping("/user")
@@ -54,7 +60,7 @@ public class UserController {
         if (register.isSuccess()) {
             ShopUser data = (ShopUser) register.getData();
             if (StringUtils.isNoneBlank(openId)) {
-                appSignUpUtils.doPostSignUp(String.valueOf(data.getUid()), providerId, openId);
+                appSignUpUtils.doPostSignUp(data.getUid().toString(), providerId, openId);
             }
             data.setPassword("");
             return ServerResponse.createBySuccess("注册成功", data);
@@ -64,8 +70,8 @@ public class UserController {
 
     @ApiOperation("获取用户信息")
     @GetMapping("/info")
-    public ServerResponse getUser(Authentication authentication) {
-        return iShopUserService.getUserInfo(authentication.getName());
+    public ServerResponse getUser(@AuthenticationPrincipal DefaultUserDetails defaultUserDetails) {
+        return iShopUserService.getUserInfo(defaultUserDetails.getUsername());
     }
 
     @ApiOperation("更新用户头像")

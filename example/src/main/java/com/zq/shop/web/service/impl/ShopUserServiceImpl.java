@@ -3,6 +3,7 @@ package com.zq.shop.web.service.impl;
 import com.zq.core.restful.ServerResponse;
 import com.zq.shop.web.bean.ShopUser;
 import com.zq.shop.web.common.Const;
+import com.zq.shop.web.mappers.IDMapper;
 import com.zq.shop.web.mappers.ShopUserMapper;
 import com.zq.shop.web.service.IShopUserService;
 import org.apache.commons.lang3.StringUtils;
@@ -25,6 +26,9 @@ public class ShopUserServiceImpl implements IShopUserService {
     private ShopUserMapper shopUserMapper;
 
     @Autowired
+    private IDMapper idMapper;
+
+    @Autowired
     private PasswordEncoder passwordEncoder;
 
     public ServerResponse register(ShopUser shopUser) {
@@ -39,6 +43,8 @@ public class ShopUserServiceImpl implements IShopUserService {
         shopUser.setRole(Const.Role.CUSTOME_USER);
         //MD5加密
         shopUser.setPassword(passwordEncoder.encode(shopUser.getPassword()));
+        //生成 用户ID
+        shopUser.setUid(idMapper.findId(Const.IDType.USER_ID));
         int resultCount = shopUserMapper.insert(shopUser);
         if (resultCount == 0) {
             return ServerResponse.createByErrorMessage("注册失败");
@@ -71,7 +77,7 @@ public class ShopUserServiceImpl implements IShopUserService {
         if (StringUtils.isBlank(name)) {
             return ServerResponse.createByErrorMessage("authtication为空");
         }
-        ShopUser shopUser = shopUserMapper.findByPhone(name).get(0);
+        ShopUser shopUser = shopUserMapper.findOneByPhone(name);
         if (shopUser == null) {
             return ServerResponse.createByErrorMessage("未获取用户信息");
         }

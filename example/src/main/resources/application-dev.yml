@@ -38,16 +38,13 @@ spring:
 mybatis:
   mapper-locations: classpath*:mappers/**/*.xml
   type-aliases-package: com.zq.shop
-logging:
-  file: ../logger.log
-  level: debug
 zq:
   security:
     oauth2-properties:
       clients[1]:
         clientId: defaultApplication
         clientSecret: defaultApplicationSecret
-      tokenStore: jwt
+#      tokenStore: jwt
     social-properties:
 #      qq:
 #        appId: wxd951035cc1889308

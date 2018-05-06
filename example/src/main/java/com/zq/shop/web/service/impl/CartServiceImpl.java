@@ -7,6 +7,7 @@ import com.zq.shop.web.bean.Cart;
 import com.zq.shop.web.bean.Product;
 import com.zq.shop.web.common.Const;
 import com.zq.shop.web.mappers.CartMapper;
+import com.zq.shop.web.mappers.IDMapper;
 import com.zq.shop.web.mappers.ProductMapper;
 import com.zq.shop.web.service.ICartService;
 import org.apache.commons.collections.CollectionUtils;
@@ -30,6 +31,9 @@ public class CartServiceImpl implements ICartService {
 
     @Autowired
     private ProductMapper productMapper;
+
+    @Autowired
+    private IDMapper idMapper;
 
 
     public ServerResponse<List<Cart>> add(Integer userId, Integer productId, Integer count) {

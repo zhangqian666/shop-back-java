@@ -32,7 +32,7 @@ public class UserFriendsServiceImpl implements IUserFriendsService {
         List<UserFriends> byUid = userFriendsMapper.findByUid(userId);
         List<ShopUser> shopUserList = Lists.newArrayList();
         for (UserFriends userFriends : byUid) {
-            shopUserList.add(shopUserMapper.selectByPrimaryKey(userFriends.getUid()));
+            shopUserList.add(shopUserMapper.selectByPrimaryKey(userFriends.getUserId()));
         }
         return ServerResponse.createBySuccess(shopUserList);
     }
@@ -42,7 +42,7 @@ public class UserFriendsServiceImpl implements IUserFriendsService {
         List<UserFriends> findlist = userFriendsMapper.findByuidAndFollowId(userId, followId);
         if (findlist.size() == 0) {
             UserFriends userFriends = new UserFriends();
-            userFriends.setUid(userId);
+            userFriends.setUserId(userId);
             userFriends.setFollowId(followId);
             userFriendsMapper.insert(userFriends);
             return ServerResponse.createBySuccessMessage("添加好友成功");

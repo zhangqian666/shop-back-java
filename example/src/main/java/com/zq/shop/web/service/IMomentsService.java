@@ -11,9 +11,9 @@ import com.zq.shop.web.bean.Moments;
 
 
 public interface IMomentsService {
-    ServerResponse create(Moments moments);
+    ServerResponse create(Moments moments, Integer uid);
 
-    ServerResponse details(Integer momentId);
+    ServerResponse details(Integer momentId, Integer uid);
 
     ServerResponse list(Integer uid);
 }

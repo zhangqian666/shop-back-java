@@ -4,6 +4,8 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import com.zq.core.restful.ServerResponse;
 import com.zq.shop.web.bean.ProductCategory;
+import com.zq.shop.web.common.Const;
+import com.zq.shop.web.mappers.IDMapper;
 import com.zq.shop.web.mappers.ProductCategoryMapper;
 import com.zq.shop.web.service.IProductCategoryService;
 import lombok.extern.slf4j.Slf4j;
@@ -26,6 +28,9 @@ public class ProductCategoryServiceImpl implements IProductCategoryService {
 
     @Autowired
     private ProductCategoryMapper productCategoryMapper;
+
+    @Autowired
+    private IDMapper idMapper;
 
     @Override
     public ServerResponse selectCategoryAndChildrenById(Integer categoryId) {
@@ -70,8 +75,8 @@ public class ProductCategoryServiceImpl implements IProductCategoryService {
         if (parentId == null || StringUtils.isBlank(categoryName)) {
             return ServerResponse.createByErrorMessage("添加品类参数错误");
         }
-
         ProductCategory category = new ProductCategory();
+        category.setId(idMapper.findId(Const.IDType.CATEGORY_ID));
         category.setName(categoryName);
         category.setParentId(parentId);
         category.setStatus(true);//这个分类是可用的

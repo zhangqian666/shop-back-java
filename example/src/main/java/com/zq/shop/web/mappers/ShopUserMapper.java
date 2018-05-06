@@ -54,11 +54,14 @@ public interface ShopUserMapper {
      */
     int updateByPrimaryKey(ShopUser record);
 
-    int updateImageByPhone(@Param("updatedImage")String updatedImage,@Param("phone")String phone);
-    int updatePasswordByPhone(@Param("updatedPassword")String updatedPassword,@Param("phone")String phone);
+    int updateImageByPhone(@Param("updatedImage") String updatedImage, @Param("phone") String phone);
+
+    int updatePasswordByPhone(@Param("updatedPassword") String updatedPassword, @Param("phone") String phone);
 
 
     List<ShopUser> findByPhone(@Param("phone") String phone);
+
+    ShopUser findOneByPhone(@Param("phone") String phone);
 
     List<ShopUser> findByEmail(@Param("email") String email);
 }

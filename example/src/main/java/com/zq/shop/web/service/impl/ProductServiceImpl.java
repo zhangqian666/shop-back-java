@@ -5,6 +5,7 @@ import com.zq.core.restful.ServerResponse;
 import com.zq.shop.web.bean.Product;
 import com.zq.shop.web.bean.ProductCategory;
 import com.zq.shop.web.common.Const;
+import com.zq.shop.web.mappers.IDMapper;
 import com.zq.shop.web.mappers.ProductCategoryMapper;
 import com.zq.shop.web.mappers.ProductMapper;
 import com.zq.shop.web.service.IProductCategoryService;
@@ -27,6 +28,8 @@ import java.util.List;
 public class ProductServiceImpl implements IProductService {
 
 
+    @Autowired
+    private IDMapper idMapper;
     @Autowired
     private ProductMapper productMapper;
 
@@ -94,6 +97,7 @@ public class ProductServiceImpl implements IProductService {
                 }
                 return ServerResponse.createBySuccess("更新产品失败");
             } else {
+                product.setId(idMapper.findId(Const.IDType.PRODUCT_ID));
                 int rowCount = productMapper.insert(product);
                 if (rowCount > 0) {
                     return ServerResponse.createBySuccess("新增产品成功");

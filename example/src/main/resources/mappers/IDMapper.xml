@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zq.shop.web.mappers.IDMapper">
+
+    <select id="findId" resultType="Integer">
+       SELECT _nextval(#{type_id,jdbcType=VARCHAR});
+    </select>
+    <!--<select id="findMomentsId" resultType="Integer">-->
+    <!--SELECT CONCAT('GI', RIGHT(CONCAT('0000000000000',_nextval('moments_id')), 13))  as goods_id;-->
+    <!--</select>-->
+</mapper>

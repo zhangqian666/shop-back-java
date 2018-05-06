@@ -170,7 +170,7 @@
         where user_id=#{userId,jdbcType=INTEGER}
         <if test="productId != null">
             and product_id in
-            <foreach collection="productId" item="item" index="index" open="(" separator="," close=")">
+            <foreach close=")" collection="productId" index="index" item="item" open="(" separator=",">
                 #{item}
             </foreach>
         </if>
