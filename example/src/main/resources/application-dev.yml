@@ -5,6 +5,7 @@ server:
     uri-encoding: utf-8
 #  context-path: "/"
 spring:
+  profiles: dev
   datasource:
     driver-class-name: com.mysql.jdbc.Driver
     url: jdbc:mysql://39.106.46.79:3306/shop?useUnicode=yes&characterEncoding=UTF-8&useSSL=false
