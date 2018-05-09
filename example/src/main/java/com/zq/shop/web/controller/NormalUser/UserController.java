@@ -50,6 +50,7 @@ public class UserController {
     @Autowired
     private IFileService iFileService;
 
+
     @ApiOperation("注册账号")
     @ApiImplicitParams({@ApiImplicitParam(name = "userId", value = "用户id", required = true)
             , @ApiImplicitParam(name = "providerId", value = "第三方id", required = true)})

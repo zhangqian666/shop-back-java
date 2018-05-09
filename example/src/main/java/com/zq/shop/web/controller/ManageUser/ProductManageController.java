@@ -1,12 +1,15 @@
 package com.zq.shop.web.controller.ManageUser;
 
+import com.zq.app.server.DefaultUserDetails;
 import com.zq.core.restful.ServerResponse;
 import com.zq.shop.web.bean.Product;
 import com.zq.shop.web.service.IFileService;
 import com.zq.shop.web.service.IProductService;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -21,7 +24,7 @@ import javax.servlet.http.HttpServletRequest;
  * @Package com.zq.shop.web.controller.ManageUser
  **/
 
-@Api(tags = "A管理员：商品管理")
+@Api(tags = "管理员：商品管理")
 @RestController
 @RequestMapping("/manage/product")
 public class ProductManageController {
@@ -40,17 +43,19 @@ public class ProductManageController {
 
     @ApiOperation("商品创建或者更新")
     @PostMapping("/update")
-    public ServerResponse create(Product product) {
-        return iProductService.saveOrUpdateProduct(product);
+    public ServerResponse create(@AuthenticationPrincipal DefaultUserDetails defaultUserDetails,
+                                 Product product) {
+        return iProductService.saveOrUpdateProduct(product, defaultUserDetails.getUid());
     }
 
-    @ApiOperation("商品创建或者更新")
+    @ApiOperation("商品状态")
     @PostMapping("/status")
     public ServerResponse create(Integer productId, Integer status) {
         return iProductService.setSaleStatus(productId, status);
     }
 
-    @ApiOperation("搜索商品 通过名字或者id")
+    @ApiOperation("搜索商品")
+    @ApiImplicitParam(value = "productId", type = "Integer", required = true)
     @PostMapping("/search")
     public ServerResponse search(Integer productId, String name) {
         return iProductService.searchProduct(name, productId, 0, 0);

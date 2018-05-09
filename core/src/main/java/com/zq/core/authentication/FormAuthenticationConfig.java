@@ -1,6 +1,7 @@
 package com.zq.core.authentication;
 
 import com.zq.core.properties.SecurityConstants;
+import com.zq.core.properties.SecurityProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
@@ -23,10 +24,14 @@ public class FormAuthenticationConfig {
     @Autowired
     private AuthenticationSuccessHandler zqAuthenticationSuccessHandler;
 
+
+    @Autowired
+    private SecurityProperties securityProperties;
+
     public void configure(HttpSecurity httpSecurity) throws Exception {
         httpSecurity.formLogin()
                 .loginPage(SecurityConstants.DEFAULT_UNAUTHENTICATION_URL)
-                .loginProcessingUrl(SecurityConstants.DEFAULT_SIGN_IN_PROCESSING_URL_FORM)
+                .loginProcessingUrl(securityProperties.getOauth2Properties().getLoginUrl())
                 .successHandler(zqAuthenticationSuccessHandler)
                 .failureHandler(zqAuthenticationFailureHandler);
 

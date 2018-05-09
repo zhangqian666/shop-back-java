@@ -263,12 +263,12 @@
         <include refid="Base_Column_List"/>
         from zq_product
         where status = 1
-        <if test="productName != null">
-            and name like #{productName}
+        <if test="likeName != null">
+            and name like #{likeName,jdbcType=VARCHAR}
         </if>
         <if test="categoryIdList != null">
             and category_id in
-            <foreach close=")" collection="categoryIdList" index="index" item="item" open="(" separator=",">
+            <foreach collection="categoryIdList" index="index" item="item" open="(" separator="," close=")">
                 #{item}
             </foreach>
         </if>
@@ -281,4 +281,5 @@
         from zq_product
         where name like #{ likeName,jdbcType=VARCHAR} or id=#{id,jdbcType=INTEGER}
     </select>
+
 </mapper>

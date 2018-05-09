@@ -57,7 +57,6 @@ public class CartController {
     @ApiOperation("更改购物车商品数量")
     @PostMapping("/update/count")
     public ServerResponse updateCount(@AuthenticationPrincipal DefaultUserDetails defaultUserDetails, Integer productId, Integer count) {
-
         return iCartService.updateCount(defaultUserDetails.getUid(), productId, count);
     }
 

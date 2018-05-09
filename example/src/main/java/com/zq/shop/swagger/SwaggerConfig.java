@@ -40,7 +40,7 @@ public class SwaggerConfig extends WebMvcConfigurerAdapter {
                 .forCodeGeneration(false)
                 .pathMapping("/")
                 .select()
-                .apis(RequestHandlerSelectors.basePackage("com.zq.shop.web"))
+                .apis(RequestHandlerSelectors.basePackage("com.zq"))
                 .paths(PathSelectors.any())
                 .build()
                 .apiInfo(productApiInfo());

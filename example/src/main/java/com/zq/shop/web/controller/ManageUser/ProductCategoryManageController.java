@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @Data 2018/4/23 下午1:59
  * @Package com.zq.shop.web.controller.ManageUser
  **/
-@Api(tags = "A管理员：商品类别管理")
+@Api(tags = "管理员：商品类别管理")
 @RestController
 @RequestMapping("/manage/product/category")
 public class ProductCategoryManageController {

@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @Package com.zq.shop.web.controller.ManageUser
  **/
 
-@Api(tags = "A管理员：订单管理")
+@Api(tags = "管理员：订单管理")
 @RestController
 @RequestMapping("/manage/order")
 public class OrderManageController {

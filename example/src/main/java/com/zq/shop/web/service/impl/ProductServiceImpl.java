@@ -14,7 +14,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -46,7 +45,7 @@ public class ProductServiceImpl implements IProductService {
             return ServerResponse.createBySuccess(products);
         }
 
-        List<Integer> categoryIdList = new ArrayList<Integer>();
+        List<Integer> categoryIdList = null;
         if (categoryId != null) {
             ProductCategory category = productCategoryMapper.selectByPrimaryKey(categoryId);
             if (category == null && StringUtils.isBlank(keyword)) {
@@ -81,7 +80,7 @@ public class ProductServiceImpl implements IProductService {
     }
 
     @Override
-    public ServerResponse saveOrUpdateProduct(Product product) {
+    public ServerResponse saveOrUpdateProduct(Product product, Integer userId) {
         if (product != null) {
             if (StringUtils.isNotBlank(product.getSubImages())) {
                 String[] subImageArray = product.getSubImages().split(",");
@@ -97,6 +96,7 @@ public class ProductServiceImpl implements IProductService {
                 }
                 return ServerResponse.createBySuccess("更新产品失败");
             } else {
+                product.setUserId(userId);
                 product.setId(idMapper.findId(Const.IDType.PRODUCT_ID));
                 int rowCount = productMapper.insert(product);
                 if (rowCount > 0) {

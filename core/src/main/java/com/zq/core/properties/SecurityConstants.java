@@ -14,8 +14,6 @@ public interface SecurityConstants {
     String DEFAULT_VALIDATE_CODE_URL_PREFIX = "/code";
     /**
      * 当请求需要身份认证时，默认跳转的url
-     *
-     * @see AppSecurityController
      */
     String DEFAULT_UNAUTHENTICATION_URL = "/authentication/require";
     /**
@@ -25,19 +23,17 @@ public interface SecurityConstants {
     /**
      * 默认的手机验证码登录请求处理url
      */
-    String DEFAULT_SIGN_IN_PROCESSING_URL_MOBILE = "/authentication/mobile";
+    String DEFAULT_SIGN_IN_PROCESSING_URL_MOBILE = "/login/mobile";
     /**
      * 默认的OPENID登录请求处理url
      */
-    String DEFAULT_SIGN_IN_PROCESSING_URL_OPENID = "/authentication/openid";
+    String DEFAULT_SIGN_IN_PROCESSING_URL_OPENID = "/login/openid";
     /**
      * 默认的accessToken登录请求处理url
      */
     String DEFAULT_SIGN_IN_PROCESSING_URL_ACCESSTOKEN = "/authentication/accessToken";
     /**
      * 默认登录页面
-     *
-     * @see SecurityController
      */
     String DEFAULT_SIGN_IN_PAGE_URL = "/zq-signIn.html";
     /**
@@ -55,7 +51,7 @@ public interface SecurityConstants {
     /**
      * openid参数名
      */
-    String DEFAULT_PARAMETER_NAME_OPENID = "openId";
+    String DEFAULT_PARAMETER_NAME_OPENID = "providerUserId";
     /**
      * providerId参数名
      */

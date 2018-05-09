@@ -38,7 +38,7 @@ public class ZqAuthenctiationFailureHandler extends SimpleUrlAuthenticationFailu
 
         log.error("登录认证失败");
         exception.printStackTrace();
-        response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
+        response.setStatus(HttpStatus.OK.value());
         response.setContentType("application/json;charset=UTF-8");
         response.getWriter().write(
                 objectMapper.writeValueAsString(

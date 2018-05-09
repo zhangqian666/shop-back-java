@@ -31,7 +31,8 @@ public class ZqAuthorizeConfigProvider implements AuthorizeConfigProvider {
                 SecurityConstants.DEFAULT_SIGN_IN_PROCESSING_URL_MOBILE,
                 SecurityConstants.DEFAULT_SIGN_IN_PROCESSING_URL_OPENID,
                 SecurityConstants.DEFAULT_VALIDATE_CODE_URL_PREFIX + "/*",
-                securityProperties.getSocialProperties().getFilterProcessesUrl()+"/*",
+                securityProperties.getOauth2Properties().getLoginUrl(),
+                securityProperties.getSocialProperties().getFilterProcessesUrl() + "/*",
                 securityProperties.getBrowserProperties().getSignInPage(),
                 securityProperties.getBrowserProperties().getSignUpUrl(),
                 securityProperties.getBrowserProperties().getSession().getSessionInvalidUrl()).permitAll();

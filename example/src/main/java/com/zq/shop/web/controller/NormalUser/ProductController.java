@@ -25,13 +25,13 @@ public class ProductController {
     private IProductService iProductService;
 
     @ApiOperation("商品列表，按条件")
-    @GetMapping("/list")
+    @PostMapping("/list")
     public ServerResponse list(@RequestParam(value = "keyword", required = false) String keyword,
                                @RequestParam(value = "categoryId", required = false) Integer categoryId,
                                @RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
                                @RequestParam(value = "pageSize", defaultValue = "10") int pageSize,
                                @RequestParam(value = "orderBy", defaultValue = "") String orderBy) {
-        return iProductService.getProductListByKeywordCategory(keyword, categoryId, pageNum, pageNum, orderBy);
+        return iProductService.getProductListByKeywordCategory(keyword, categoryId, pageNum, pageSize, orderBy);
 
     }
 

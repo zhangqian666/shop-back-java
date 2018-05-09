@@ -64,10 +64,11 @@ public interface ProductMapper {
 
     List<Product> find();
 
-    List<Product> selectByNameAndCategoryIds(@Param("productName") String productName
+    List<Product> selectByNameAndCategoryIds(@Param("likeName") String productName
             , @Param("categoryIdList") List<Integer> categoryIdList);
 
-    List<Product> findByNameLikeOrId(@Param(" likeName") String likeName, @Param("id") Integer id);
+
+    List<Product> findByNameLikeOrId(@Param("likeName") String likeName, @Param("id") Integer id);
 
 
 }
