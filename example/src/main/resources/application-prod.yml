@@ -42,7 +42,7 @@ mybatis:
   mapper-locations: classpath*:mappers/**/*.xml
   type-aliases-package: com.zq.shop
 logging:
-  file: ../logger.log
+  file: /developer/logger.log
   level: debug
 zq:
   security:
