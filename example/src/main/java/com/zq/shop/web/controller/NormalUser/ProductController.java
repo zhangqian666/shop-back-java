@@ -2,11 +2,16 @@ package com.zq.shop.web.controller.NormalUser;
 
 import com.zq.core.restful.ServerResponse;
 import com.zq.shop.web.service.IProductService;
+import com.zq.shop.web.vo.ProductVo;
+import com.zq.shop.web.vo.RecommendVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
+import org.assertj.core.util.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * @Author 张迁-zhangqian
@@ -23,6 +28,28 @@ public class ProductController {
 
     @Autowired
     private IProductService iProductService;
+
+
+    @ApiOperation("推荐列表")
+    @GetMapping("/recommend")
+    public ServerResponse list(@RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
+                               @RequestParam(value = "pageSize", defaultValue = "10") int pageSize,
+                               @RequestParam(value = "orderBy", defaultValue = "") String orderBy) {
+
+        List<ProductVo> recommendProductList = iProductService.getProductListByKeywordCategory("", null, pageNum, pageSize, orderBy).getData();
+        List<String> recommendImages = Lists.newArrayList();
+        recommendImages.add("http://39.106.46.79/images/banner_1.png");
+        recommendImages.add("http://39.106.46.79/images/banner_2.png");
+        recommendImages.add("http://39.106.46.79/images/banner_3.png");
+//        recommendImages.add("http://39.106.46.79/images/banner4.png");
+
+        RecommendVo recommendVo = new RecommendVo();
+        recommendVo.setRecommendProducts(recommendProductList);
+        recommendVo.setRecommendImages(recommendImages);
+        return ServerResponse.createBySuccess(recommendVo);
+
+    }
+
 
     @ApiOperation("商品列表，按条件")
     @PostMapping("/list")

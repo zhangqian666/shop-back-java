@@ -71,7 +71,7 @@ public class ZqAuthenticationSuccessHandler extends SavedRequestAwareAuthenticat
         } catch (RuntimeException e) {
             authenticationFailureHandler.onAuthenticationFailure(request, response, new ProductTokenException(e.getMessage()));
         }
-        resultMsg(response, token);
+        resultMsg(response, token,authentication);
 
     }
 
@@ -80,9 +80,12 @@ public class ZqAuthenticationSuccessHandler extends SavedRequestAwareAuthenticat
      *
      * @param response
      * @param o
+     * @param authentication
      * @throws IOException
      */
-    private void resultMsg(HttpServletResponse response, Object o) throws IOException {
+    private void resultMsg(HttpServletResponse response, OAuth2AccessToken o, Authentication authentication) throws IOException {
+//        String token = o.getValue();
+//        DefaultUserDetails principal = (DefaultUserDetails) authentication.getPrincipal();
         response.setContentType("application/json;charset=UTF-8");
         response.getWriter().write(objectMapper.writeValueAsString(ServerResponse.createBySuccess(o)));
     }

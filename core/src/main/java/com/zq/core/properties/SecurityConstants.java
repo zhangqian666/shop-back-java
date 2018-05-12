@@ -19,7 +19,7 @@ public interface SecurityConstants {
     /**
      * 默认的用户名密码登录请求处理url
      */
-    String DEFAULT_SIGN_IN_PROCESSING_URL_FORM = "/authentication/form";
+    String DEFAULT_SIGN_IN_PROCESSING_URL_FORM = "/login";
     /**
      * 默认的手机验证码登录请求处理url
      */

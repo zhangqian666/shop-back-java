@@ -2,6 +2,7 @@ package com.zq.shop.web.service;
 
 import com.zq.core.restful.ServerResponse;
 import com.zq.shop.web.bean.Product;
+import com.zq.shop.web.vo.ProductVo;
 
 import java.util.List;
 
@@ -13,17 +14,17 @@ import java.util.List;
 
 
 public interface IProductService {
-    ServerResponse getProductListByKeywordCategory(String keyword, Integer categoryId, int pagenum, int pagesize, String orderby);
+    ServerResponse<List<ProductVo>> getProductListByKeywordCategory(String keyword, Integer categoryId, int pagenum, int pagesize, String orderby);
 
-    ServerResponse details(Integer productId);
+    ServerResponse<ProductVo> details(Integer productId);
 
-    ServerResponse saveOrUpdateProduct(Product product,Integer userId);
+    ServerResponse<ProductVo> saveOrUpdateProduct(Product product, Integer userId);
 
     ServerResponse<String> setSaleStatus(Integer productId, Integer status);
 
 
-    ServerResponse<List<Product>> getProductList(int pageNum, int pageSize);
+    ServerResponse<List<ProductVo>> getProductList(int pageNum, int pageSize);
 
-    ServerResponse<List<Product>> searchProduct(String productName, Integer productId, int pageNum, int pageSize);
+    ServerResponse<List<ProductVo>> searchProduct(String productName, Integer productId, int pageNum, int pageSize);
 
 }

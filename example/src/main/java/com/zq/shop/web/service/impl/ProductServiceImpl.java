@@ -10,7 +10,10 @@ import com.zq.shop.web.mappers.ProductCategoryMapper;
 import com.zq.shop.web.mappers.ProductMapper;
 import com.zq.shop.web.service.IProductCategoryService;
 import com.zq.shop.web.service.IProductService;
+import com.zq.shop.web.vo.ProductVo;
 import org.apache.commons.lang3.StringUtils;
+import org.assertj.core.util.Lists;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -38,11 +41,12 @@ public class ProductServiceImpl implements IProductService {
     @Autowired
     private IProductCategoryService iProductCategoryService;
 
-    public ServerResponse getProductListByKeywordCategory(String keyword, Integer categoryId, int pagenum, int pagesize, String orderby) {
 
+    @Override
+    public ServerResponse<List<ProductVo>> getProductListByKeywordCategory(String keyword, Integer categoryId, int pagenum, int pagesize, String orderby) {
         if (StringUtils.isBlank(keyword) && categoryId == null) {
             List<Product> products = productMapper.find();
-            return ServerResponse.createBySuccess(products);
+            return ServerResponse.createBySuccess(assembleProductVos(products));
         }
 
         List<Integer> categoryIdList = null;
@@ -59,13 +63,12 @@ public class ProductServiceImpl implements IProductService {
         }
 
         List<Product> products = productMapper.selectByNameAndCategoryIds(keyword, categoryIdList);
-
-        return ServerResponse.createBySuccess(products);
+        return ServerResponse.createBySuccess(assembleProductVos(products));
 
     }
 
-
-    public ServerResponse details(Integer productId) {
+    @Override
+    public ServerResponse<ProductVo> details(Integer productId) {
         if (productId == null) {
             return ServerResponse.createByErrorCodeMessage(ResponseCode.ILLEGAL_ARGUMENT.getCode(), ResponseCode.ILLEGAL_ARGUMENT.getDesc());
         }
@@ -76,11 +79,14 @@ public class ProductServiceImpl implements IProductService {
         if (product.getStatus() != Const.ProductStatus.ON_SALE) {
             return ServerResponse.createByErrorMessage("产品已下架或者删除");
         }
-        return ServerResponse.createBySuccess(product);
+
+        ProductVo productVo = new ProductVo();
+        BeanUtils.copyProperties(product, productVo);
+        return ServerResponse.createBySuccess(productVo);
     }
 
     @Override
-    public ServerResponse saveOrUpdateProduct(Product product, Integer userId) {
+    public ServerResponse<ProductVo> saveOrUpdateProduct(Product product, Integer userId) {
         if (product != null) {
             if (StringUtils.isNotBlank(product.getSubImages())) {
                 String[] subImageArray = product.getSubImages().split(",");
@@ -92,17 +98,17 @@ public class ProductServiceImpl implements IProductService {
             if (product.getId() != null) {
                 int rowCount = productMapper.updateByPrimaryKey(product);
                 if (rowCount > 0) {
-                    return ServerResponse.createBySuccess("更新产品成功");
+                    return ServerResponse.createBySuccessMessage("更新产品成功");
                 }
-                return ServerResponse.createBySuccess("更新产品失败");
+                return ServerResponse.createBySuccessMessage("更新产品失败");
             } else {
                 product.setUserId(userId);
                 product.setId(idMapper.findId(Const.IDType.PRODUCT_ID));
                 int rowCount = productMapper.insert(product);
                 if (rowCount > 0) {
-                    return ServerResponse.createBySuccess("新增产品成功");
+                    return ServerResponse.createBySuccessMessage("新增产品成功");
                 }
-                return ServerResponse.createBySuccess("新增产品失败");
+                return ServerResponse.createBySuccessMessage("新增产品失败");
             }
         }
         return ServerResponse.createByErrorMessage("新增或更新产品参数不正确");
@@ -125,13 +131,25 @@ public class ProductServiceImpl implements IProductService {
     }
 
     @Override
-    public ServerResponse<List<Product>> getProductList(int pageNum, int pageSize) {
-        return ServerResponse.createBySuccess(productMapper.find());
+    public ServerResponse<List<ProductVo>> getProductList(int pageNum, int pageSize) {
+        return ServerResponse.createBySuccess(assembleProductVos(productMapper.find()));
     }
 
     @Override
-    public ServerResponse<List<Product>> searchProduct(String productName, Integer productId, int pageNum, int pageSize) {
-        return ServerResponse.createBySuccess(productMapper.findByNameLikeOrId(productName, productId));
+    public ServerResponse<List<ProductVo>> searchProduct(String productName, Integer productId, int pageNum, int pageSize) {
+        List<Product> products = productMapper.findByNameLikeOrId(productName, productId);
+        return ServerResponse.createBySuccess(assembleProductVos(products));
+    }
+
+
+    private List<ProductVo> assembleProductVos(List<Product> list) {
+        List<ProductVo> productVos = Lists.newArrayList();
+        for (Product product : list) {
+            ProductVo productVo = new ProductVo();
+            BeanUtils.copyProperties(product, productVo);
+            productVos.add(productVo);
+        }
+        return productVos;
     }
 
 }
