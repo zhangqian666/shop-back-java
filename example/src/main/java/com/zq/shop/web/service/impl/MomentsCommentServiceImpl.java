@@ -1,7 +1,6 @@
 package com.zq.shop.web.service.impl;
 
 import com.zq.core.restful.ServerResponse;
-import com.zq.shop.web.bean.Moments;
 import com.zq.shop.web.bean.MomentsComment;
 import com.zq.shop.web.common.Const;
 import com.zq.shop.web.mappers.IDMapper;
@@ -31,21 +30,16 @@ public class MomentsCommentServiceImpl implements IMomentsCommentService {
     @Autowired
     private IDMapper idMapper;
 
-    public ServerResponse create(MomentsComment momentsComment, Integer uid) {
+    public ServerResponse create(MomentsComment momentsComment) {
         Integer momentsCommentId = idMapper.findId(Const.IDType.MOMENTS_COMMENT_ID);
         momentsComment.setId(momentsCommentId);
-        momentsComment.setFollowId(uid);
-
-        Moments moments = momentsMapper.selectByPrimaryKey(momentsComment.getMomentsId());
-        if (moments == null) {
-            return ServerResponse.createByErrorMessage("未找到该文章");
+        Integer userIdById = momentsMapper.findUserIdById(momentsComment.getMomentsId());
+        if (userIdById == null) {
+            return ServerResponse.createByErrorMessage("找不到该文章作者");
         }
-        Integer userId = moments.getUserId();
-        momentsComment.setUserId(userId);
-
-
+        momentsComment.setFollowId(userIdById);
         momentsCommentMapper.insert(momentsComment);
-        return ServerResponse.createBySuccess("评论成功", momentsCommentId);
+        return ServerResponse.createBySuccess("评论成功", momentsComment);
 
     }
 

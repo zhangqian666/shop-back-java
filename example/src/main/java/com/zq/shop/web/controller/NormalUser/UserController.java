@@ -69,9 +69,14 @@ public class UserController {
     }
 
     @ApiOperation("获取用户信息")
-    @GetMapping("/info")
-    public ServerResponse getUser(@AuthenticationPrincipal DefaultUserDetails defaultUserDetails) {
-        return iShopUserService.getUserInfo(defaultUserDetails.getUsername());
+    @PostMapping("/info")
+    public ServerResponse getUser(@AuthenticationPrincipal DefaultUserDetails defaultUserDetails, Integer userId) {
+        if (userId == null) {
+            return iShopUserService.getUserInfo(defaultUserDetails.getUsername());
+        } else {
+            return iShopUserService.getUserInfo(userId);
+        }
+
     }
 
     @ApiOperation("更新用户头像")

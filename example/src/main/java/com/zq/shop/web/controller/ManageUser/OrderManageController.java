@@ -37,7 +37,7 @@ public class OrderManageController {
 
     @ApiOperation("发送货物")
     @PostMapping("/send_goods")
-    public ServerResponse manageSendGoods(Long orderNo) {
+    public ServerResponse manageSendGoods(Long orderNo)  {
         return iOrderService.manageSendGoods(orderNo);
     }
 }

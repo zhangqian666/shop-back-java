@@ -1,7 +1,7 @@
 package com.zq.shop.web.service;
 
 import com.zq.core.restful.ServerResponse;
-import com.zq.shop.web.bean.ProductCategory;
+import com.zq.shop.web.vo.CategoryVo;
 
 import java.util.List;
 
@@ -15,7 +15,7 @@ import java.util.List;
 public interface IProductCategoryService {
     ServerResponse<List<Integer>> selectCategoryAndChildrenById(Integer id);
 
-    ServerResponse<List<ProductCategory>> getChildrenParallelCategory(Integer categoryId);
+    ServerResponse<List<CategoryVo>> getChildrenParallelCategory(Integer categoryId);
 
     ServerResponse addCategory(String categoryName, Integer parentId);
 

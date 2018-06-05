@@ -17,10 +17,7 @@ import java.util.List;
 @Getter
 @Setter
 public class OrderVo {
-
     private Order order;
     private List<OrderItem> orderItems;
     private Shipping shipping;
-
-
 }

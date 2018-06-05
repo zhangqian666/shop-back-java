@@ -11,8 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 /**
  * @Author 张迁-zhangqian
  * @Data 2018/4/21 下午2:34
@@ -73,6 +71,7 @@ public class ShopUserServiceImpl implements IShopUserService {
         return ServerResponse.createBySuccessMessage("校验成功");
     }
 
+    @Override
     public ServerResponse<ShopUser> getUserInfo(String name) {
         if (StringUtils.isBlank(name)) {
             return ServerResponse.createByErrorMessage("authtication为空");
@@ -84,6 +83,16 @@ public class ShopUserServiceImpl implements IShopUserService {
         shopUser.setPassword(null);
         return ServerResponse.createBySuccess(shopUser);
 
+    }
+
+    @Override
+    public ServerResponse<ShopUser> getUserInfo(Integer userId) {
+        ShopUser shopUser = shopUserMapper.selectByPrimaryKey(userId);
+        if (shopUser == null) {
+            return ServerResponse.createByErrorMessage("未获取用户信息");
+        }
+        shopUser.setPassword(null);
+        return ServerResponse.createBySuccess(shopUser);
     }
 
     @Override

@@ -8,9 +8,11 @@ import com.zq.shop.web.common.Const;
 import com.zq.shop.web.mappers.IDMapper;
 import com.zq.shop.web.mappers.ProductCategoryMapper;
 import com.zq.shop.web.service.IProductCategoryService;
+import com.zq.shop.web.vo.CategoryVo;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -60,12 +62,36 @@ public class ProductCategoryServiceImpl implements IProductCategoryService {
     }
 
 
-    public ServerResponse<List<ProductCategory>> getChildrenParallelCategory(Integer categoryId) {
+    public ServerResponse<List<CategoryVo>> getChildrenParallelCategory(Integer categoryId) {
         List<ProductCategory> categoryList = productCategoryMapper.findByParentId(categoryId);
         if (CollectionUtils.isEmpty(categoryList)) {
-            log.info("未找到当前分类的子分类");
+            return ServerResponse.createByErrorMessage("未找到当前分类的子分类");
         }
-        return ServerResponse.createBySuccess(categoryList);
+        List<CategoryVo> categoryVos = Lists.newArrayList();
+        if (categoryId == 0) {
+            List<ProductCategory> rootCategorys = productCategoryMapper.findByParentId(0);
+            for (ProductCategory pc : rootCategorys) {
+                CategoryVo categoryVo = new CategoryVo();
+                BeanUtils.copyProperties(pc, categoryVo);
+                categoryVos.add(categoryVo);
+            }
+            return ServerResponse.createBySuccess(categoryVos);
+        }
+        List<ProductCategory> rootCategorys = productCategoryMapper.findByParentId(categoryId);
+        for (ProductCategory pc : rootCategorys) {
+            CategoryVo categoryVo = new CategoryVo();
+            BeanUtils.copyProperties(pc, categoryVo);
+            List<ProductCategory> itemList = productCategoryMapper.findByParentId(pc.getId());
+            List<CategoryVo> itemVos = Lists.newArrayList();
+            for (ProductCategory itemPc : itemList) {
+                CategoryVo itemVo = new CategoryVo();
+                BeanUtils.copyProperties(itemPc, itemVo);
+                itemVos.add(itemVo);
+            }
+            categoryVo.setItemList(itemVos);
+            categoryVos.add(categoryVo);
+        }
+        return ServerResponse.createBySuccess(categoryVos);
     }
 
 

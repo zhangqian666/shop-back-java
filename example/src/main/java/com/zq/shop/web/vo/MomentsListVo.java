@@ -1,7 +1,5 @@
 package com.zq.shop.web.vo;
 
-import com.zq.shop.web.bean.Moments;
-import com.zq.shop.web.bean.MomentsComment;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -16,7 +14,6 @@ import java.util.List;
 @Getter
 @Setter
 public class MomentsListVo {
-
-    Moments moments;
-    List<MomentsComment> momentsComments;
+    private MomentVo momentVo;
+    private List<MomentCommentVo> momentCommentVos;
 }

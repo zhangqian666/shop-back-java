@@ -56,7 +56,13 @@ public interface MomentsMapper {
 
     List<Moments> findByUserId(@Param("userId") Integer userId);
 
+    Integer findUserIdById(@Param("id") Integer id);
+
     List<Moments> find();
+
+    int updateStarById(@Param("updatedStar") Integer updatedStar, @Param("id") Integer id);
+
+    int updateSeeTimesById(@Param("updatedSeeTimes") Integer updatedSeeTimes, @Param("id") Integer id);
 
 
 }

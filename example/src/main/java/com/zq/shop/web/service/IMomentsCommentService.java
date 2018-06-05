@@ -11,7 +11,7 @@ import com.zq.shop.web.bean.MomentsComment;
 
 
 public interface IMomentsCommentService {
-    ServerResponse create(MomentsComment momentsComment, Integer uid);
+    ServerResponse create(MomentsComment momentsComment);
 
     ServerResponse findComment(Integer momentsId);
 }
