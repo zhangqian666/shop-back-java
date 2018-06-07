@@ -8,9 +8,9 @@ spring:
   profiles: dev
   datasource:
     driver-class-name: com.mysql.jdbc.Driver
-    url: jdbc:mysql://39.106.46.79:3306/shop?useUnicode=yes&characterEncoding=UTF-8&useSSL=false
-    username: root
-    password: 123456_aA
+    url: mysql 地址
+    username: mysql 账号
+    password: mysql 密码
     tomcat:
       max-active: 100
       min-idle: 10
