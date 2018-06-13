@@ -21,6 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.util.List;
 
 /**
  * @Author 张迁-zhangqian
@@ -70,11 +71,26 @@ public class ProductManageController {
 
     @ApiOperation("上传商品图片")
     @PostMapping("/upload/image")
-    public ServerResponse updateUserImage(@RequestParam("upload_file") MultipartFile file,
-                                          HttpServletRequest httpServletRequest) {
+    public ServerResponse<String> updateUserImage(@RequestParam("upload_file") MultipartFile file,
+                                                  HttpServletRequest httpServletRequest) {
         String path = httpServletRequest.getSession().getServletContext().getRealPath("upload");
-        String uploadFile = iFileService.uploadFile(file, path);
-        return ServerResponse.createBySuccess("上传成功", uploadFile);
+        ServerResponse<String> uploadFile = iFileService.uploadFile(file, path);
+        if (uploadFile.isSuccess())
+            return ServerResponse.createBySuccess("上传成功", uploadFile.getData());
+        else
+            return uploadFile;
+    }
+
+    @ApiOperation("上传商品图片")
+    @PostMapping("/upload/images")
+    public ServerResponse<List<String>> updateUserImages(@RequestParam("upload_file") List<MultipartFile> files,
+                                                         HttpServletRequest httpServletRequest) {
+        String path = httpServletRequest.getSession().getServletContext().getRealPath("upload");
+        ServerResponse<List<String>> uploadFile = iFileService.uploadFiles(files, path);
+        if (uploadFile.isSuccess())
+            return ServerResponse.createBySuccess("上传成功", uploadFile.getData());
+        else
+            return uploadFile;
     }
 
 }

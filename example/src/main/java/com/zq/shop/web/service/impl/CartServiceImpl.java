@@ -10,12 +10,19 @@ import com.zq.shop.web.mappers.CartMapper;
 import com.zq.shop.web.mappers.IDMapper;
 import com.zq.shop.web.mappers.ProductMapper;
 import com.zq.shop.web.service.ICartService;
+import com.zq.shop.web.service.IProductService;
+import com.zq.shop.web.vo.CartVo;
+import com.zq.shop.web.vo.StoreVo;
 import org.apache.commons.collections.CollectionUtils;
 import org.assertj.core.util.Lists;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Author 张迁-zhangqian
@@ -35,8 +42,11 @@ public class CartServiceImpl implements ICartService {
     @Autowired
     private IDMapper idMapper;
 
+    @Autowired
+    private IProductService iProductService;
 
-    public ServerResponse<List<Cart>> add(Integer userId, Integer productId, Integer count) {
+
+    public ServerResponse add(Integer userId, Integer productId, Integer count) {
         if (productId == null || count == null) {
             return ServerResponse.createByErrorCodeMessage(ResponseCode.ILLEGAL_ARGUMENT.getCode(), ResponseCode.ILLEGAL_ARGUMENT.getDesc());
         }
@@ -62,10 +72,10 @@ public class CartServiceImpl implements ICartService {
             cart.setQuantity(count);
             cartMapper.updateByPrimaryKeySelective(cart);
         }
-        return ServerResponse.createBySuccess(getCarts(userId));
+        return ServerResponse.createBySuccessMessage(String.format("添加产品：%d成功", productId));
     }
 
-    public ServerResponse<List<Cart>> updateCount(Integer userId, Integer productId, Integer count) {
+    public ServerResponse updateCount(Integer userId, Integer productId, Integer count) {
         if (productId == null || count == null) {
             return ServerResponse.createByErrorCodeMessage(ResponseCode.ILLEGAL_ARGUMENT.getCode(), ResponseCode.ILLEGAL_ARGUMENT.getDesc());
         }
@@ -74,24 +84,26 @@ public class CartServiceImpl implements ICartService {
             cart.setQuantity(count);
         }
         cartMapper.updateByPrimaryKey(cart);
-        return ServerResponse.createBySuccess(getCarts(userId));
+        CartVo cartVo = new CartVo();
+        BeanUtils.copyProperties(cart, cartVo);
+        return ServerResponse.createBySuccess(cartVo);
     }
 
-    public ServerResponse<List<Cart>> delete(Integer userId, String productIds) {
+    public ServerResponse delete(Integer userId, String productIds) {
         List<String> productList = Splitter.on(",").splitToList(productIds);
         if (CollectionUtils.isEmpty(productList)) {
             return ServerResponse.createByErrorCodeMessage(ResponseCode.ILLEGAL_ARGUMENT.getCode(), ResponseCode.ILLEGAL_ARGUMENT.getDesc());
         }
         cartMapper.deleteByUserIdAndProductId(userId, productList);
-        return ServerResponse.createBySuccess(getCarts(userId));
+        return ServerResponse.createBySuccessMessage(String.format("删除产品：%s成功", productIds));
     }
 
 
-    public ServerResponse<List<Cart>> list(Integer userId) {
+    public ServerResponse list(Integer userId) {
         return ServerResponse.createBySuccess(getCarts(userId));
     }
 
-    public ServerResponse<List<Cart>> selectOrUnSelect(Integer userId, Integer productId, Integer checked) {
+    public ServerResponse selectOrUnSelect(Integer userId, Integer productId, Integer checked) {
         cartMapper.updateCheckedByUserIdAndProductId(checked, userId, productId);
         return ServerResponse.createBySuccess(getCarts(userId));
     }
@@ -103,10 +115,9 @@ public class CartServiceImpl implements ICartService {
      * @param userId
      * @return
      */
-    private List<Cart> getCarts(Integer userId) {
+    private List<StoreVo> getCarts(Integer userId) {
         List<Cart> cartList = cartMapper.findByUserId(userId);
-        List<Cart> newCartList = Lists.newArrayList();
-
+        List<CartVo> newCartList = Lists.newArrayList();
         if (CollectionUtils.isNotEmpty(cartList)) {
             for (Cart cartItem : cartList) {
                 Product product = productMapper.selectByPrimaryKey(cartItem.getProductId());
@@ -126,10 +137,34 @@ public class CartServiceImpl implements ICartService {
                     }
                     cartItem.setQuantity(buyLimitCount);
                 }
-                newCartList.add(cartItem);
+                CartVo cartVo = new CartVo();
+                BeanUtils.copyProperties(cartItem, cartVo);
+                cartVo.setProductVo(iProductService.details(cartVo.getProductId()).getData());
+                newCartList.add(cartVo);
 
             }
         }
-        return newCartList;
+
+        Map<Integer, List<CartVo>> listMap = new HashMap<>();
+        for (CartVo cb : newCartList) {
+            Integer productUserId = cb.getProductVo().getUserId();
+            if (listMap.containsKey(productUserId)) {
+                listMap.get(productUserId).add(cb);
+            } else {
+                List<CartVo> cartVos = new ArrayList<>();
+                cartVos.add(cb);
+                listMap.put(productUserId, cartVos);
+            }
+        }
+        List<StoreVo> storeVos = new ArrayList<>();
+        for (Map.Entry<Integer, List<CartVo>> integerListEntry : listMap.entrySet()) {
+            StoreVo storeVo = new StoreVo();
+            storeVo.setUserId(integerListEntry.getKey());
+            storeVo.setUsername(integerListEntry.getValue().get(0).getProductVo().getUsername());
+            storeVo.setCartVos(integerListEntry.getValue());
+            storeVos.add(storeVo);
+        }
+
+        return storeVos;
     }
 }

@@ -1,13 +1,16 @@
 package com.zq.shop.web.service.impl;
 
+import com.github.pagehelper.PageHelper;
 import com.zq.core.restful.ResponseCode;
 import com.zq.core.restful.ServerResponse;
 import com.zq.shop.web.bean.Product;
 import com.zq.shop.web.bean.ProductCategory;
+import com.zq.shop.web.bean.ShopUser;
 import com.zq.shop.web.common.Const;
 import com.zq.shop.web.mappers.IDMapper;
 import com.zq.shop.web.mappers.ProductCategoryMapper;
 import com.zq.shop.web.mappers.ProductMapper;
+import com.zq.shop.web.mappers.ShopUserMapper;
 import com.zq.shop.web.service.IProductCategoryService;
 import com.zq.shop.web.service.IProductService;
 import com.zq.shop.web.vo.ProductVo;
@@ -41,10 +44,16 @@ public class ProductServiceImpl implements IProductService {
     @Autowired
     private IProductCategoryService iProductCategoryService;
 
+    @Autowired
+    private ShopUserMapper shopUserMapper;
+
 
     @Override
     public ServerResponse<List<ProductVo>> getProductListByKeywordCategory(String keyword, Integer categoryId, int pagenum, int pagesize, String orderby) {
+
         if (StringUtils.isBlank(keyword) && categoryId == null) {
+            //排序实现: 数据库字段 + " desc" 或 数据库字段 + " asc"
+            PageHelper.startPage(0, 10, "id desc");
             List<Product> products = productMapper.find();
             return ServerResponse.createBySuccess(assembleProductVos(products));
         }
@@ -62,6 +71,8 @@ public class ProductServiceImpl implements IProductService {
             keyword = new StringBuilder().append("%").append(keyword).append("%").toString();
         }
 
+        //排序实现: 数据库字段 + " desc" 或 数据库字段 + " asc"
+        PageHelper.startPage(0, 10, "id desc");
         List<Product> products = productMapper.selectByNameAndCategoryIds(keyword, categoryIdList);
         return ServerResponse.createBySuccess(assembleProductVos(products));
 
@@ -82,6 +93,8 @@ public class ProductServiceImpl implements IProductService {
 
         ProductVo productVo = new ProductVo();
         BeanUtils.copyProperties(product, productVo);
+        ShopUser shopUser = shopUserMapper.selectByPrimaryKey(productVo.getUserId());
+        productVo.setUsername(shopUser.getUsername());
         return ServerResponse.createBySuccess(productVo);
     }
 
@@ -147,6 +160,8 @@ public class ProductServiceImpl implements IProductService {
         for (Product product : list) {
             ProductVo productVo = new ProductVo();
             BeanUtils.copyProperties(product, productVo);
+            ShopUser shopUser = shopUserMapper.selectByPrimaryKey(productVo.getUserId());
+            productVo.setUsername(shopUser.getUsername());
             productVos.add(productVo);
         }
         return productVos;

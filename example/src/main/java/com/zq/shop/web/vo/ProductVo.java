@@ -26,12 +26,15 @@ public class ProductVo {
 
     private Integer userId;
 
+    private String username;
+
     /**
      * Database Column Remarks:
      * 商品名称
      */
     @NotBlank(message = "商品名不能为空")
     private String name;
+
 
     /**
      * Database Column Remarks:

@@ -48,8 +48,8 @@
         quantity, checked, create_time,
         update_time)
         values (#{id,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{productId,jdbcType=INTEGER},
-        #{quantity,jdbcType=INTEGER}, #{checked,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP},
-        #{updateTime,jdbcType=TIMESTAMP})
+        #{quantity,jdbcType=INTEGER}, #{checked,jdbcType=INTEGER}, now(),
+        now())
     </insert>
     <insert id="insertSelective" parameterType="com.zq.shop.web.bean.Cart">
         <!--

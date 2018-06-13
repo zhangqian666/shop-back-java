@@ -1,5 +1,6 @@
 package com.zq.shop.web.service.impl;
 
+import com.github.pagehelper.PageHelper;
 import com.google.common.collect.Lists;
 import com.zq.core.restful.ServerResponse;
 import com.zq.shop.web.bean.Moments;
@@ -83,6 +84,8 @@ public class MomentsServiceImpl implements IMomentsService {
     }
 
     public ServerResponse<List<MomentVo>> list(Integer uid, Integer searchUid) {
+        //排序实现: 数据库字段 + " desc" 或 数据库字段 + " asc"
+        PageHelper.startPage(0, 10, "id desc");
         List<Moments> moments;
         if (searchUid == null) {
             moments = momentsMapper.find();
@@ -117,6 +120,8 @@ public class MomentsServiceImpl implements IMomentsService {
             }
             momentCommentVos.add(target);
         }
+
+
         return ServerResponse.createBySuccess(momentCommentVos);
     }
 

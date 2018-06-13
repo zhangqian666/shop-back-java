@@ -1,6 +1,9 @@
 package com.zq.shop.web.service;
 
+import com.zq.core.restful.ServerResponse;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 /**
  * @Author 张迁-zhangqian
@@ -10,5 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 
 public interface IFileService {
-    String uploadFile(MultipartFile file, String path);
+    ServerResponse<String> uploadFile(MultipartFile file, String path);
+
+    ServerResponse<List<String>> uploadFiles(List<MultipartFile> files, String path);
 }

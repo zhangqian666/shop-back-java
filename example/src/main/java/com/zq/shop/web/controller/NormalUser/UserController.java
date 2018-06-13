@@ -85,8 +85,11 @@ public class UserController {
                                           @AuthenticationPrincipal DefaultUserDetails defaultUserDetails,
                                           HttpServletRequest httpServletRequest) {
         String path = httpServletRequest.getSession().getServletContext().getRealPath("upload");
-        String uploadFile = iFileService.uploadFile(file, path);
-        return iShopUserService.updateUserImage(uploadFile, defaultUserDetails.getUid());
+        ServerResponse<String> uploadFile = iFileService.uploadFile(file, path);
+        if (uploadFile.isSuccess())
+            return iShopUserService.updateUserImage(uploadFile.getData(), defaultUserDetails.getUid());
+        else
+            return uploadFile;
     }
 
     @ApiOperation("修改密码")

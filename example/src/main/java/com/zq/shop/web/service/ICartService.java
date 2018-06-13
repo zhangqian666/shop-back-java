@@ -1,9 +1,6 @@
 package com.zq.shop.web.service;
 
 import com.zq.core.restful.ServerResponse;
-import com.zq.shop.web.bean.Cart;
-
-import java.util.List;
 
 /**
  * @Author 张迁-zhangqian
@@ -13,13 +10,13 @@ import java.util.List;
 
 
 public interface ICartService {
-    ServerResponse<List<Cart>> add(Integer userId, Integer productId, Integer count);
+    ServerResponse add(Integer userId, Integer productId, Integer count);
 
-    ServerResponse<List<Cart>> delete(Integer userId, String productIds);
+    ServerResponse delete(Integer userId, String productIds);
 
-    ServerResponse<List<Cart>> updateCount(Integer userId, Integer productId, Integer count);
+    ServerResponse updateCount(Integer userId, Integer productId, Integer count);
 
-    ServerResponse<List<Cart>> list(Integer userId);
+    ServerResponse list(Integer userId);
 
-    ServerResponse<List<Cart>> selectOrUnSelect(Integer userId, Integer productId, Integer checked);
+    ServerResponse selectOrUnSelect(Integer userId, Integer productId, Integer checked);
 }

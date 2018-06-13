@@ -30,7 +30,7 @@ public class ShopUserServiceImpl implements IShopUserService {
     private PasswordEncoder passwordEncoder;
 
     public ServerResponse register(ShopUser shopUser) {
-        ServerResponse validResponse = this.available(shopUser.getUsername(), Const.User.EMAIL);
+        ServerResponse validResponse = this.available(shopUser.getEmail(), Const.User.EMAIL);
         if (!validResponse.isSuccess()) {
             return validResponse;
         }
@@ -44,6 +44,8 @@ public class ShopUserServiceImpl implements IShopUserService {
         //生成 用户ID
         shopUser.setUid(idMapper.findId(Const.IDType.USER_ID));
 
+        shopUser.setUsername(Const.User.DEFAULT_NAME + shopUser.getUid());
+
         int resultCount = shopUserMapper.insert(shopUser);
         if (resultCount == 0) {
             return ServerResponse.createByErrorMessage("注册失败");
@@ -56,14 +58,15 @@ public class ShopUserServiceImpl implements IShopUserService {
         if (StringUtils.isNoneBlank(type)) {
             //开始校验
             if (Const.User.EMAIL.equals(type)) {
+                if (StringUtils.isBlank(username)) return ServerResponse.createBySuccess();
                 ShopUser resultData = shopUserMapper.findOneByEmail(username);
-                if (resultData == null) {
+                if (resultData != null) {
                     return ServerResponse.createByErrorMessage("email已存在");
                 }
             }
             if (Const.User.PHONE.equals(type)) {
                 ShopUser resultData = shopUserMapper.findOneByPhone(username);
-                if (resultData == null) {
+                if (resultData != null) {
                     return ServerResponse.createByErrorMessage("手机号已存在");
                 }
             }
@@ -97,10 +100,9 @@ public class ShopUserServiceImpl implements IShopUserService {
 
     @Override
     public ServerResponse updateUserImage(String uploadFile, Integer userId) {
-        if (shopUserMapper.updateImageByUid(uploadFile, userId) == 0) {
+        if (shopUserMapper.updateImageByUid(Const.User.IMAGE_PER + uploadFile, userId) == 0) {
             return ServerResponse.createByErrorMessage("更新失败");
         }
-
         return ServerResponse.createBySuccess("更新头像成功", uploadFile);
     }
 

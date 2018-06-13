@@ -1,6 +1,7 @@
 package com.zq.shop.web.controller.NormalUser;
 
 import com.zq.core.restful.ServerResponse;
+import com.zq.shop.web.common.Const;
 import com.zq.shop.web.service.IProductService;
 import com.zq.shop.web.vo.ProductVo;
 import com.zq.shop.web.vo.RecommendVo;
@@ -38,11 +39,10 @@ public class ProductController {
 
         List<ProductVo> recommendProductList = iProductService.getProductListByKeywordCategory("", null, pageNum, pageSize, orderBy).getData();
         List<String> recommendImages = Lists.newArrayList();
-        recommendImages.add("http://39.106.46.79/images/banner_1.png");
-        recommendImages.add("http://39.106.46.79/images/banner_2.png");
-        recommendImages.add("http://39.106.46.79/images/banner_3.png");
-//        recommendImages.add("http://39.106.46.79/images/banner4.png");
-
+        recommendImages.add(Const.User.IMAGE_PER + "banner_1.png");
+        recommendImages.add(Const.User.IMAGE_PER + "banner_2.png");
+        recommendImages.add(Const.User.IMAGE_PER + "banner_3.png");
+        recommendImages.add(Const.User.IMAGE_PER + "banner4.png");
         RecommendVo recommendVo = new RecommendVo();
         recommendVo.setRecommendProducts(recommendProductList);
         recommendVo.setRecommendImages(recommendImages);

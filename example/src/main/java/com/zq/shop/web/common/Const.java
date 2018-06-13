@@ -38,6 +38,8 @@ public class Const {
     public interface User {
         String EMAIL = "email";
         String PHONE = "phone";
+        String IMAGE_PER = "http://zack-image.oss-cn-beijing.aliyuncs.com/";
+        String DEFAULT_NAME = "User_";
     }
 
     public interface ProductStatus {
