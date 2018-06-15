@@ -42,8 +42,8 @@ public class ProductManageController {
 
     @ApiOperation("商品列表")
     @PostMapping("/list")
-    public ServerResponse list() {
-        return iProductService.getProductList(0, 0);
+    public ServerResponse list(@AuthenticationPrincipal DefaultUserDetails defaultUserDetails) {
+        return iProductService.getProductList(defaultUserDetails.getUid(), 0, 0);
     }
 
     @ApiOperation("商品创建或者更新")
@@ -58,7 +58,7 @@ public class ProductManageController {
 
     @ApiOperation("商品状态")
     @PostMapping("/status")
-    public ServerResponse create(@NotEmpty Integer productId, @NotEmpty Integer status) {
+    public ServerResponse updateStatus(@NotEmpty Integer productId, @NotEmpty Integer status) {
         return iProductService.setSaleStatus(productId, status);
     }
 

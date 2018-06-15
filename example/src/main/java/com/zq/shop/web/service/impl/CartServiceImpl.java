@@ -12,7 +12,9 @@ import com.zq.shop.web.mappers.ProductMapper;
 import com.zq.shop.web.service.ICartService;
 import com.zq.shop.web.service.IProductService;
 import com.zq.shop.web.vo.CartVo;
+import com.zq.shop.web.vo.ProductVo;
 import com.zq.shop.web.vo.StoreVo;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.CollectionUtils;
 import org.assertj.core.util.Lists;
 import org.springframework.beans.BeanUtils;
@@ -30,6 +32,7 @@ import java.util.Map;
  * @Package com.zq.shop.web.service.impl
  **/
 
+@Slf4j
 @Service("iCartService")
 public class CartServiceImpl implements ICartService {
 
@@ -139,7 +142,8 @@ public class CartServiceImpl implements ICartService {
                 }
                 CartVo cartVo = new CartVo();
                 BeanUtils.copyProperties(cartItem, cartVo);
-                cartVo.setProductVo(iProductService.details(cartVo.getProductId()).getData());
+                ProductVo data = iProductService.details(cartVo.getProductId()).getData();
+                cartVo.setProductVo(data);
                 newCartList.add(cartVo);
 
             }
@@ -147,6 +151,7 @@ public class CartServiceImpl implements ICartService {
 
         Map<Integer, List<CartVo>> listMap = new HashMap<>();
         for (CartVo cb : newCartList) {
+            if (cb.getProductVo() == null) continue;
             Integer productUserId = cb.getProductVo().getUserId();
             if (listMap.containsKey(productUserId)) {
                 listMap.get(productUserId).add(cb);

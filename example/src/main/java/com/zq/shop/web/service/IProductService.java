@@ -23,7 +23,7 @@ public interface IProductService {
     ServerResponse<String> setSaleStatus(Integer productId, Integer status);
 
 
-    ServerResponse<List<ProductVo>> getProductList(int pageNum, int pageSize);
+    ServerResponse<List<ProductVo>> getProductList(Integer uid, int pageNum, int pageSize);
 
     ServerResponse<List<ProductVo>> searchProduct(String productName, Integer productId, int pageNum, int pageSize);
 

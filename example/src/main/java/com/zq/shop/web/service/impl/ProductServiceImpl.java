@@ -54,7 +54,7 @@ public class ProductServiceImpl implements IProductService {
         if (StringUtils.isBlank(keyword) && categoryId == null) {
             //排序实现: 数据库字段 + " desc" 或 数据库字段 + " asc"
             PageHelper.startPage(0, 10, "id desc");
-            List<Product> products = productMapper.find();
+            List<Product> products = productMapper.selectByNameAndCategoryIdsOnSale(null,null);
             return ServerResponse.createBySuccess(assembleProductVos(products));
         }
 
@@ -73,7 +73,7 @@ public class ProductServiceImpl implements IProductService {
 
         //排序实现: 数据库字段 + " desc" 或 数据库字段 + " asc"
         PageHelper.startPage(0, 10, "id desc");
-        List<Product> products = productMapper.selectByNameAndCategoryIds(keyword, categoryIdList);
+        List<Product> products = productMapper.selectByNameAndCategoryIdsOnSale(keyword, categoryIdList);
         return ServerResponse.createBySuccess(assembleProductVos(products));
 
     }
@@ -109,6 +109,7 @@ public class ProductServiceImpl implements IProductService {
             }
 
             if (product.getId() != null) {
+                product.setUserId(userId);
                 int rowCount = productMapper.updateByPrimaryKey(product);
                 if (rowCount > 0) {
                     return ServerResponse.createBySuccessMessage("更新产品成功");
@@ -137,20 +138,20 @@ public class ProductServiceImpl implements IProductService {
         product.setStatus(status);
         int rowCount = productMapper.updateByPrimaryKeySelective(product);
         if (rowCount > 0) {
-            return ServerResponse.createBySuccess("修改产品销售状态成功");
+            return ServerResponse.createBySuccessMessage("修改产品销售状态成功");
         }
         return ServerResponse.createByErrorMessage("修改产品销售状态失败");
 
     }
 
     @Override
-    public ServerResponse<List<ProductVo>> getProductList(int pageNum, int pageSize) {
-        return ServerResponse.createBySuccess(assembleProductVos(productMapper.find()));
+    public ServerResponse<List<ProductVo>> getProductList(Integer uid, int pageNum, int pageSize) {
+        return ServerResponse.createBySuccess(assembleProductVos(productMapper.findByUserId(uid)));
     }
 
     @Override
     public ServerResponse<List<ProductVo>> searchProduct(String productName, Integer productId, int pageNum, int pageSize) {
-        List<Product> products = productMapper.findByNameLikeOrId(productName, productId);
+        List<Product> products = productMapper.findByNameLikeOrIdOnSale(productName, productId);
         return ServerResponse.createBySuccess(assembleProductVos(products));
     }
 
