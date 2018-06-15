@@ -20,5 +20,5 @@ public interface IShopUserService {
 
     ServerResponse updateUserPassword(String password, Integer userId);
 
-    ServerResponse updateUserName(String username, Integer uid);
+    ServerResponse updateInfo(ShopUser username, Integer uid);
 }

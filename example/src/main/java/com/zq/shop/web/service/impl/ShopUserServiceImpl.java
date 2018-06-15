@@ -122,9 +122,11 @@ public class ShopUserServiceImpl implements IShopUserService {
     }
 
     @Override
-    public ServerResponse updateUserName(String username, Integer uid) {
-        if (shopUserMapper.updateUsernameByUid(username, uid) == 0) {
-            return ServerResponse.createByErrorMessage("修改名称失败");
+    public ServerResponse updateInfo(ShopUser userinfo, Integer uid) {
+        userinfo.setUid(uid);
+        int count = shopUserMapper.updateByPrimaryKeySelective(userinfo);
+        if (count == 0) {
+            return ServerResponse.createByErrorMessage("修改信息失败");
         }
         return ServerResponse.createBySuccessMessage("修改名称成功");
     }

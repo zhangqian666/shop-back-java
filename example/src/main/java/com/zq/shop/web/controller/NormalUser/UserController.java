@@ -99,11 +99,11 @@ public class UserController {
         return iShopUserService.updateUserPassword(password, defaultUserDetails.getUid());
     }
 
-    @ApiOperation("修改密码")
-    @PostMapping("/update/username")
-    public ServerResponse updateUserName(
-            @AuthenticationPrincipal DefaultUserDetails defaultUserDetails, String username) {
-        return iShopUserService.updateUserName(username, defaultUserDetails.getUid());
+    @ApiOperation("修改信息")
+    @PostMapping("/update/info")
+    public ServerResponse updateInfo(
+            @AuthenticationPrincipal DefaultUserDetails defaultUserDetails, ShopUser shopUser) {
+        return iShopUserService.updateInfo(shopUser, defaultUserDetails.getUid());
     }
 
 }
