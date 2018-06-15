@@ -51,6 +51,7 @@ public class ShopUserServiceImpl implements IShopUserService {
             shopUser.setEmail("");
             shopUser.setSex(0);
             shopUser.setType(0);
+            shopUser.setImage("http://39.106.46.79/images/product.png");
         }
         int resultCount = shopUserMapper.insert(shopUser);
         if (resultCount == 0) {
