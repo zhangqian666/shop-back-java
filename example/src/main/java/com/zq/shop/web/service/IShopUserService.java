@@ -19,4 +19,6 @@ public interface IShopUserService {
     ServerResponse updateUserImage(String uploadFile, Integer userId);
 
     ServerResponse updateUserPassword(String password, Integer userId);
+
+    ServerResponse updateUserName(String username, Integer uid);
 }

@@ -56,6 +56,8 @@ public interface ShopUserMapper {
 
     int updateImageByUid(@Param("updatedImage") String updatedImage, @Param("uid") Integer uid);
 
+    int updateUsernameByUid(@Param("updatedUsername") String updatedUsername, @Param("uid") Integer uid);
+
     ShopUser findOneByPhone(@Param("phone") String phone);
 
     ShopUser findOneByEmail(@Param("email") String email);

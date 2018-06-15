@@ -46,6 +46,12 @@ public class ShopUserServiceImpl implements IShopUserService {
 
         shopUser.setUsername(Const.User.DEFAULT_NAME + shopUser.getUid());
 
+        {
+            shopUser.setAge(0);
+            shopUser.setEmail("");
+            shopUser.setSex(0);
+            shopUser.setType(0);
+        }
         int resultCount = shopUserMapper.insert(shopUser);
         if (resultCount == 0) {
             return ServerResponse.createByErrorMessage("注册失败");
@@ -112,5 +118,13 @@ public class ShopUserServiceImpl implements IShopUserService {
             return ServerResponse.createByErrorMessage("修改密码失败");
         }
         return ServerResponse.createBySuccessMessage("修改密码成功");
+    }
+
+    @Override
+    public ServerResponse updateUserName(String username, Integer uid) {
+        if (shopUserMapper.updateUsernameByUid(username, uid) == 0) {
+            return ServerResponse.createByErrorMessage("修改名称失败");
+        }
+        return ServerResponse.createBySuccessMessage("修改名称成功");
     }
 }
