@@ -65,6 +65,13 @@ public class ShippingServiceImpl implements IShippingService {
         if (shipping == null) {
             return ServerResponse.createByErrorMessage("无法查询到该地址");
         }
+        List<Shipping> byUserId = shippingMapper.findByUserIdAndIsDefault(userId);
+        for (Shipping ship : byUserId) {
+            ship.setIsDefault(0);
+            shippingMapper.updateByShipping(ship);
+        }
+        shipping.setIsDefault(1);
+        shippingMapper.updateByShipping(shipping);
         return ServerResponse.createBySuccess("更新地址成功", shipping);
     }
 

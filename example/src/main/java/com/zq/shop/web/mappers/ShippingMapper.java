@@ -60,5 +60,8 @@ public interface ShippingMapper {
 
     Shipping findByUserIdAndId(@Param("userId") Integer userId, @Param("id") Integer id);
 
-    List<Shipping> findByUserId(@Param("userId")Integer userId);
+    List<Shipping> findByUserIdAndIsDefault(@Param("userId") Integer userId);
+
+
+    List<Shipping> findByUserId(@Param("userId") Integer userId);
 }
