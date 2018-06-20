@@ -88,7 +88,6 @@ public class OrderServiceImpl implements IOrderService {
             if (CollectionUtils.isEmpty(osv.getOrderItemVos())) {
                 return ServerResponse.createByErrorMessage("购物车为空");
             }
-            orderMapper.insert(order);
             orderstr.append(order.getOrderNo()).append(",");
 
             for (OrderItemVo orderItemVo : osv.getOrderItemVos()) {
