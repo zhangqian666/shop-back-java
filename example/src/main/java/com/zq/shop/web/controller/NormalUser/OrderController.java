@@ -28,7 +28,7 @@ public class OrderController {
     @ApiOperation("预生成订单")
     @PostMapping("/precreate")
     public ServerResponse preCreateOrder(@AuthenticationPrincipal DefaultUserDetails defaultUserDetails, String productIds) {
-        return iOrderService.precreateOrder(defaultUserDetails.getUid(), productIds);
+        return iOrderService.preCreateOrder(defaultUserDetails.getUid(), productIds);
     }
 
     @ApiOperation("生成订单")

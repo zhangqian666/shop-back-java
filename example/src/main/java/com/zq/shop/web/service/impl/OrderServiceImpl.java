@@ -183,7 +183,7 @@ public class OrderServiceImpl implements IOrderService {
     }
 
     @Override
-    public ServerResponse precreateOrder(Integer userId, String productIds) {
+    public ServerResponse preCreateOrder(Integer userId, String productIds) {
         if (TextUtils.isEmpty(productIds)) {
             return ServerResponse.createByErrorMessage("选中的商品不能为空");
         }

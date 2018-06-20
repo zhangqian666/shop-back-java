@@ -30,5 +30,5 @@ public interface IOrderService {
 
     ServerResponse manageSendGoods(Long orderNo);
 
-    ServerResponse precreateOrder(Integer uid, String productIds);
+    ServerResponse preCreateOrder(Integer uid, String productIds);
 }
