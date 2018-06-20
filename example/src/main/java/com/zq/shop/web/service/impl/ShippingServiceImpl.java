@@ -2,8 +2,10 @@ package com.zq.shop.web.service.impl;
 
 import com.google.common.collect.Maps;
 import com.zq.core.restful.ServerResponse;
+import com.zq.shop.web.bean.Address;
 import com.zq.shop.web.bean.Shipping;
 import com.zq.shop.web.common.Const;
+import com.zq.shop.web.mappers.AddressMapper;
 import com.zq.shop.web.mappers.IDMapper;
 import com.zq.shop.web.mappers.ShippingMapper;
 import com.zq.shop.web.service.IShippingService;
@@ -30,6 +32,11 @@ public class ShippingServiceImpl implements IShippingService {
     @Autowired
     private IDMapper idMapper;
 
+    @Autowired
+    private AddressMapper addressMapper;
+
+
+    @Override
     public ServerResponse add(Integer userId, Shipping shipping) {
         shipping.setUserId(userId);
         shipping.setId(idMapper.findId(Const.IDType.SHIPPING_ID));
@@ -42,6 +49,7 @@ public class ShippingServiceImpl implements IShippingService {
         return ServerResponse.createByErrorMessage("新建地址失败");
     }
 
+    @Override
     public ServerResponse<String> del(Integer userId, Integer shippingId) {
         int resultCount = shippingMapper.deleteByIdAndUserId(userId, shippingId);
         if (resultCount > 0) {
@@ -51,6 +59,7 @@ public class ShippingServiceImpl implements IShippingService {
     }
 
 
+    @Override
     public ServerResponse update(Integer userId, Shipping shipping) {
         shipping.setUserId(userId);
         int rowCount = shippingMapper.updateByShipping(shipping);
@@ -60,15 +69,16 @@ public class ShippingServiceImpl implements IShippingService {
         return ServerResponse.createByErrorMessage("更新地址失败");
     }
 
+    @Override
     public ServerResponse<Shipping> select(Integer userId, Integer shippingId) {
         Shipping shipping = shippingMapper.findByUserIdAndId(userId, shippingId);
         if (shipping == null) {
             return ServerResponse.createByErrorMessage("无法查询到该地址");
         }
-        List<Shipping> byUserId = shippingMapper.findByUserIdAndIsDefault(userId);
-        for (Shipping ship : byUserId) {
-            ship.setIsDefault(0);
-            shippingMapper.updateByShipping(ship);
+        Shipping byUserId = shippingMapper.findByUserIdAndIsDefault(userId);
+        if (byUserId != null) {
+            byUserId.setIsDefault(0);
+            shippingMapper.updateByShipping(byUserId);
         }
         shipping.setIsDefault(1);
         shippingMapper.updateByShipping(shipping);
@@ -76,9 +86,24 @@ public class ShippingServiceImpl implements IShippingService {
     }
 
 
+    @Override
     public ServerResponse<List<Shipping>> list(Integer userId, int pageNum, int pageSize) {
 
         List<Shipping> shippingList = shippingMapper.findByUserId(userId);
         return ServerResponse.createBySuccess(shippingList);
+    }
+
+    @Override
+    public ServerResponse<List<Address>> address(Integer uid, String shengcode, String dicode, Integer level) {
+        List<Address> addresses;
+        if (level != null) {
+            addresses = addressMapper.findByLevelAndShengOrDi(
+                    String.format("%s", level),
+                    level == 3 || level == 2 ? shengcode : null,
+                    level == 3 ? dicode : null);
+            return ServerResponse.createBySuccess(addresses);
+        }
+        return ServerResponse.createByErrorMessage("level 参数缺少");
+
     }
 }

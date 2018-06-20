@@ -25,10 +25,16 @@ public class OrderController {
     @Autowired
     private IOrderService iOrderService;
 
+    @ApiOperation("预生成订单")
+    @PostMapping("/precreate")
+    public ServerResponse preCreateOrder(@AuthenticationPrincipal DefaultUserDetails defaultUserDetails, String productIds) {
+        return iOrderService.precreateOrder(defaultUserDetails.getUid(), productIds);
+    }
+
     @ApiOperation("生成订单")
     @PostMapping("/create")
-    public ServerResponse createOrder(@AuthenticationPrincipal DefaultUserDetails defaultUserDetails, Integer shippingId) {
-        return iOrderService.createOrder(defaultUserDetails.getUid(), shippingId);
+    public ServerResponse createOrder(@AuthenticationPrincipal DefaultUserDetails defaultUserDetails, Integer shippingId, String productIds) {
+        return iOrderService.createOrder(defaultUserDetails.getUid(), shippingId, productIds);
     }
 
     @ApiOperation("取消订单")
@@ -45,8 +51,8 @@ public class OrderController {
 
     @ApiOperation("订单列表")
     @PostMapping("/list")
-    public ServerResponse list(@AuthenticationPrincipal DefaultUserDetails defaultUserDetails) {
-        return iOrderService.getOrderList(defaultUserDetails.getUid(), 0, 0);
+    public ServerResponse list(@AuthenticationPrincipal DefaultUserDetails defaultUserDetails, Integer status) {
+        return iOrderService.getOrderList(defaultUserDetails.getUid(), status, 0, 0);
     }
 
     @ApiOperation("已选商品列表")

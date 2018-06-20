@@ -2,6 +2,7 @@ package com.zq.shop.web.controller.NormalUser;
 
 import com.zq.app.server.DefaultUserDetails;
 import com.zq.core.restful.ServerResponse;
+import com.zq.shop.web.bean.Address;
 import com.zq.shop.web.bean.Shipping;
 import com.zq.shop.web.service.IShippingService;
 import io.swagger.annotations.Api;
@@ -11,6 +12,8 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 /**
  * @Author 张迁-zhangqian
@@ -55,5 +58,12 @@ public class ShippingController {
     public ServerResponse<Shipping> select(@AuthenticationPrincipal DefaultUserDetails defaultUserDetails, Integer shippingId) {
         return iShippingService.select(defaultUserDetails.getUid(), shippingId);
     }
+
+    @ApiOperation("获取地址选择信息")
+    @PostMapping("/address")
+    public ServerResponse<List<Address>> address(@AuthenticationPrincipal DefaultUserDetails defaultUserDetails, String shengCode, String diCode, Integer level) {
+        return iShippingService.address(defaultUserDetails.getUid(), shengCode, diCode, level);
+    }
+
 
 }

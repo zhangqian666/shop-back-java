@@ -1,7 +1,6 @@
 package com.zq.shop.web.service;
 
 import com.zq.core.restful.ServerResponse;
-import com.zq.shop.web.bean.Order;
 import com.zq.shop.web.vo.OrderVo;
 
 import java.util.List;
@@ -14,13 +13,13 @@ import java.util.List;
 
 
 public interface IOrderService {
-    ServerResponse createOrder(Integer userId, Integer shippingId);
+    ServerResponse createOrder(Integer userId, Integer shippingId, String productIds);
 
-    ServerResponse<String> cancel(Integer userId, Long orderNo);
+    ServerResponse cancel(Integer userId, Long orderNo);
 
     ServerResponse<OrderVo> getOrderDetail(Integer userId, Long orderNo);
 
-    ServerResponse<List<Order>> getOrderList(Integer userId, int pageNum, int pageSize);
+    ServerResponse<List<OrderVo>> getOrderList(Integer userId, Integer status, int pageNum, int pageSize);
 
     ServerResponse getOrderCheckedProductList(Integer uid, int i, int i1);
 
@@ -29,5 +28,7 @@ public interface IOrderService {
 
     ServerResponse<OrderVo> manageDetail(Long orderNo);
 
-    ServerResponse<String> manageSendGoods(Long orderNo);
+    ServerResponse manageSendGoods(Long orderNo);
+
+    ServerResponse precreateOrder(Integer uid, String productIds);
 }

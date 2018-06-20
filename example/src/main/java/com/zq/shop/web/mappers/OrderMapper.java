@@ -54,11 +54,11 @@ public interface OrderMapper {
      */
     int updateByPrimaryKey(Order record);
 
-
     Order findOneByUserIdAndOrderNo(@Param("userId") Integer userId, @Param("orderNo") Long orderNo);
 
-
     List<Order> findByUserId(@Param("userId") Integer userId);
+
+    List<Order> findByUserIdAndStatus(@Param("userId") Integer userId, @Param("status") Integer status);
 
     List<Order> find();
 

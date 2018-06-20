@@ -1,6 +1,7 @@
 package com.zq.shop.web.service;
 
 import com.zq.core.restful.ServerResponse;
+import com.zq.shop.web.bean.Address;
 import com.zq.shop.web.bean.Shipping;
 
 import java.util.List;
@@ -22,4 +23,6 @@ public interface IShippingService {
     ServerResponse<Shipping> select(Integer userId, Integer shippingId);
 
     ServerResponse<List<Shipping>> list(Integer userId, int pageNum, int pageSize);
+
+    ServerResponse<List<Address>> address(Integer uid, String shengcode, String dicode, Integer level);
 }

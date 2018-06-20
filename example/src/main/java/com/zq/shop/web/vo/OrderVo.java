@@ -1,7 +1,6 @@
 package com.zq.shop.web.vo;
 
 import com.zq.shop.web.bean.Order;
-import com.zq.shop.web.bean.OrderItem;
 import com.zq.shop.web.bean.Shipping;
 import lombok.Getter;
 import lombok.Setter;
@@ -18,6 +17,6 @@ import java.util.List;
 @Setter
 public class OrderVo {
     private Order order;
-    private List<OrderItem> orderItems;
+    private List<OrderShopVo> orderShopVos;
     private Shipping shipping;
 }
