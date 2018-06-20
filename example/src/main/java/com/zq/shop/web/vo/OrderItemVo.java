@@ -1,8 +1,9 @@
 package com.zq.shop.web.vo;
 
-import com.zq.shop.web.bean.OrderItem;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.math.BigDecimal;
 
 /**
  * @Author 张迁-zhangqian
@@ -13,6 +14,13 @@ import lombok.Setter;
 @Getter
 @Setter
 public class OrderItemVo {
-    private OrderItem orderItem;
+    private Long orderNo;
+    private Integer userId;
+    private Integer productId;
+    private String productName;
+    private String productImage;
+    private BigDecimal currentUnitPrice;
+    private Integer quantity;
+    private BigDecimal totalPrice;
     private ProductVo productVo;
 }
