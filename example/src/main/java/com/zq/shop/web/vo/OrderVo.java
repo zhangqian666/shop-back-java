@@ -6,7 +6,6 @@ import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.util.Date;
-import java.util.List;
 
 /**
  * @Author 张迁-zhangqian
@@ -22,12 +21,13 @@ public class OrderVo {
     private Integer shippingId;
     private BigDecimal payment;
     private Integer paymentType;
+    private Integer settlementId;
     private Integer postage;
     private Integer status;
     private Date paymentTime;
     private Date sendTime;
     private Date endTime;
     private Date closeTime;
-    private List<OrderShopVo> orderShopVos;
+    private OrderShopVo orderShopVo;
     private Shipping shipping;
 }

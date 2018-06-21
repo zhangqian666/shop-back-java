@@ -14,7 +14,11 @@ import java.util.List;
 @Setter
 @Getter
 public class OrderShopVo {
-    private Integer shopid;
-    private String shopname;
+    private Integer shopId;
+    private Integer shopSn;
+    private Integer userId;
+    private String shopName;
+    private String shopImg;
+    private String shopTel;
     private List<OrderItemVo> orderItemVos;
 }

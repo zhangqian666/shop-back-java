@@ -56,6 +56,7 @@ public class Const {
         String USER_ID = "user_id";
         String PRODUCT_ID = "product_id";
         String ORDER_ID = "order_id";
+        String ORDER_SETTLEMENTS_ID = "order_settlements_id";
         String CATEGORY_ID = "category_id";
         String PAY_INFO_ID = "pay_info_id";
         String SHIPPING_ID = "shipping_id";
