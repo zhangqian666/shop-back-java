@@ -125,6 +125,10 @@ public class CartServiceImpl implements ICartService {
             for (Cart cartItem : cartList) {
                 Product product = productMapper.selectByPrimaryKey(cartItem.getProductId());
                 if (product != null) {
+                    if (product.getStock() == 0) {
+                        cartMapper.deleteByPrimaryKey(cartItem.getId());
+                        continue;
+                    }
                     //判断库存
                     int buyLimitCount = 0;
                     if (product.getStock() >= cartItem.getQuantity()) {
@@ -136,12 +140,7 @@ public class CartServiceImpl implements ICartService {
                         Cart cartForQuantity = new Cart();
                         cartForQuantity.setId(cartItem.getId());
                         cartForQuantity.setQuantity(buyLimitCount);
-                        if (buyLimitCount == 0) {
-                            cartMapper.deleteByPrimaryKey(cartForQuantity.getId());
-                            continue;
-                        } else {
-                            cartMapper.updateByPrimaryKeySelective(cartForQuantity);
-                        }
+                        cartMapper.updateByPrimaryKeySelective(cartForQuantity);
                     }
                     cartItem.setQuantity(buyLimitCount);
                 }

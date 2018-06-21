@@ -7,6 +7,7 @@ import com.zq.shop.web.bean.*;
 import com.zq.shop.web.common.Const;
 import com.zq.shop.web.mappers.*;
 import com.zq.shop.web.service.IOrderService;
+import com.zq.shop.web.service.IProductService;
 import com.zq.shop.web.vo.OrderItemVo;
 import com.zq.shop.web.vo.OrderShopVo;
 import com.zq.shop.web.vo.OrderVo;
@@ -49,6 +50,9 @@ public class OrderServiceImpl implements IOrderService {
     private ShippingMapper shippingMapper;
     @Autowired
     private ShopUserMapper shopUserMapper;
+    @Autowired
+    private IProductService iProductService;
+
 
     @Autowired
     private IDMapper idMapper;
@@ -338,8 +342,14 @@ public class OrderServiceImpl implements IOrderService {
     private void reduceProductStock(List<OrderItem> orderItemList) {
         for (OrderItem orderItem : orderItemList) {
             Product product = productMapper.selectByPrimaryKey(orderItem.getProductId());
-            product.setStock(product.getStock() - orderItem.getQuantity());
-            productMapper.updateByPrimaryKeySelective(product);
+            int stock = product.getStock() - orderItem.getQuantity();
+            if (stock != 0) {
+                product.setStock(stock);
+                productMapper.updateByPrimaryKeySelective(product);
+            } else {
+                iProductService.setSaleStatus(product.getId(), 2);
+            }
+
         }
     }
 
