@@ -159,10 +159,10 @@ public class ProductServiceImpl implements IProductService {
     private List<ProductVo> assembleProductVos(List<Product> list) {
         List<ProductVo> productVos = Lists.newArrayList();
         for (Product product : list) {
-            ProductVo productVo = new ProductVo();
-            if (productVo.getStock() == 0) {
+            if (product.getStock() == 0) {
                 continue;
             }
+            ProductVo productVo = new ProductVo();
             BeanUtils.copyProperties(product, productVo);
             ShopUser shopUser = shopUserMapper.selectByPrimaryKey(productVo.getUserId());
             productVo.setUsername(shopUser.getUsername());
