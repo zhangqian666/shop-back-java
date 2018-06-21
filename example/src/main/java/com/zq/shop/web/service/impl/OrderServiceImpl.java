@@ -434,12 +434,6 @@ public class OrderServiceImpl implements IOrderService {
         order.setPayment(payment);
         order.setUserId(userId);
         order.setShippingId(shippingId);
-        //发货时间等等
-        //付款时间等等
-        int rowCount = orderMapper.insert(order);
-        if (rowCount > 0) {
-            return order;
-        }
         return order;
     }
 
