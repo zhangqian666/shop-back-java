@@ -19,6 +19,13 @@
           <option name="url" value="39.106.46.79:3306" />
           <option name="userName" value="root" />
         </NewDatabaseInfo>
+        <NewDatabaseInfo>
+          <option name="database" value="shop" />
+          <option name="databaseType" value="MySql" />
+          <option name="password" value="123456_aA" />
+          <option name="url" value="39.106.46.79:3306" />
+          <option name="userName" value="root" />
+        </NewDatabaseInfo>
       </list>
     </option>
   </component>
