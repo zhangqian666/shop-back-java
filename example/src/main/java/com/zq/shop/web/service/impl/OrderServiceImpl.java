@@ -228,7 +228,6 @@ public class OrderServiceImpl implements IOrderService {
         orderSettlements.setIsfinish(0);
 
 
-
         BigDecimal totalPrice = new BigDecimal("0");
         for (OrderVo ov : orderVoListData) {
             totalPrice = BigDecimalUtil.add(totalPrice.doubleValue(), ov.getPayment().doubleValue());
@@ -353,8 +352,8 @@ public class OrderServiceImpl implements IOrderService {
 
         }
         OrderShopVo orderShopVo = new OrderShopVo();
-        orderShopVo.setShopId(orderItemVos.get(0).getProductVo().getUserId());
-        orderShopVo.setShopName(shopUserMapper.selectByPrimaryKey(orderItemVos.get(0).getProductVo().getUserId()).getUsername());
+        orderShopVo.setShopId(order.getUserId());
+        orderShopVo.setShopName(shopUserMapper.selectByPrimaryKey(order.getUserId()).getUsername());
         orderShopVo.setOrderItemVos(orderItemVos);
 
         OrderVo orderVo = new OrderVo();
@@ -427,7 +426,7 @@ public class OrderServiceImpl implements IOrderService {
      */
     private Order assembleOrder(Integer userId, Integer shippingId, BigDecimal payment) {
         Order order = new Order();
-        order.setOrderNo(Long.parseLong(idMapper.findId(Const.IDType.ORDER_ID).toString()));
+        order.setOrderNo(generateOrderNo());
         order.setStatus(Const.OrderStatus.NO_PAY);
         order.setPostage(0);
         order.setPaymentType(Const.PaymentType.ON_Line);
