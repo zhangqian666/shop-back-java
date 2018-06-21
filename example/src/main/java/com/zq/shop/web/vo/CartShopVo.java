@@ -14,7 +14,7 @@ import java.util.List;
 
 @Getter
 @Setter
-public class StoreVo {
+public class CartShopVo {
     private Integer userId;
     private String username;
     private List<CartVo> cartVos;

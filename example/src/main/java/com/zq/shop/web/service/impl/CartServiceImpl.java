@@ -13,7 +13,7 @@ import com.zq.shop.web.service.ICartService;
 import com.zq.shop.web.service.IProductService;
 import com.zq.shop.web.vo.CartVo;
 import com.zq.shop.web.vo.ProductVo;
-import com.zq.shop.web.vo.StoreVo;
+import com.zq.shop.web.vo.CartShopVo;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.CollectionUtils;
 import org.assertj.core.util.Lists;
@@ -118,7 +118,7 @@ public class CartServiceImpl implements ICartService {
      * @param userId
      * @return
      */
-    private List<StoreVo> getCarts(Integer userId) {
+    private List<CartShopVo> getCarts(Integer userId) {
         List<Cart> cartList = cartMapper.findByUserId(userId);
         List<CartVo> newCartList = Lists.newArrayList();
         if (CollectionUtils.isNotEmpty(cartList)) {
@@ -132,6 +132,7 @@ public class CartServiceImpl implements ICartService {
                         buyLimitCount = cartItem.getQuantity();
                     } else {
                         buyLimitCount = product.getStock();
+                        if (buyLimitCount == 0) continue;
                         //购物车中更新有效库存
                         Cart cartForQuantity = new Cart();
                         cartForQuantity.setId(cartItem.getId());
@@ -161,15 +162,15 @@ public class CartServiceImpl implements ICartService {
                 listMap.put(productUserId, cartVos);
             }
         }
-        List<StoreVo> storeVos = new ArrayList<>();
+        List<CartShopVo> cartShopVos = new ArrayList<>();
         for (Map.Entry<Integer, List<CartVo>> integerListEntry : listMap.entrySet()) {
-            StoreVo storeVo = new StoreVo();
-            storeVo.setUserId(integerListEntry.getKey());
-            storeVo.setUsername(integerListEntry.getValue().get(0).getProductVo().getUsername());
-            storeVo.setCartVos(integerListEntry.getValue());
-            storeVos.add(storeVo);
+            CartShopVo cartShopVo = new CartShopVo();
+            cartShopVo.setUserId(integerListEntry.getKey());
+            cartShopVo.setUsername(integerListEntry.getValue().get(0).getProductVo().getUsername());
+            cartShopVo.setCartVos(integerListEntry.getValue());
+            cartShopVos.add(cartShopVo);
         }
 
-        return storeVos;
+        return cartShopVos;
     }
 }
