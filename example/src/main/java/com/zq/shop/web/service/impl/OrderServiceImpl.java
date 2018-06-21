@@ -351,9 +351,10 @@ public class OrderServiceImpl implements IOrderService {
             }
 
         }
+        Integer shopID = orderItemVos.get(0).getProductVo().getUserId();
         OrderShopVo orderShopVo = new OrderShopVo();
-        orderShopVo.setShopId(order.getUserId());
-        orderShopVo.setShopName(shopUserMapper.selectByPrimaryKey(orderItemVos.get(0).getProductVo().getUserId()).getUsername());
+        orderShopVo.setShopId(shopID);
+        orderShopVo.setShopName(shopUserMapper.selectByPrimaryKey(shopID).getUsername());
         orderShopVo.setOrderItemVos(orderItemVos);
 
         OrderVo orderVo = new OrderVo();
