@@ -132,12 +132,16 @@ public class CartServiceImpl implements ICartService {
                         buyLimitCount = cartItem.getQuantity();
                     } else {
                         buyLimitCount = product.getStock();
-                        if (buyLimitCount == 0) continue;
                         //购物车中更新有效库存
                         Cart cartForQuantity = new Cart();
                         cartForQuantity.setId(cartItem.getId());
                         cartForQuantity.setQuantity(buyLimitCount);
-                        cartMapper.updateByPrimaryKeySelective(cartForQuantity);
+                        if (buyLimitCount == 0) {
+                            cartMapper.deleteByPrimaryKey(cartForQuantity.getId());
+                            continue;
+                        } else {
+                            cartMapper.updateByPrimaryKeySelective(cartForQuantity);
+                        }
                     }
                     cartItem.setQuantity(buyLimitCount);
                 }
