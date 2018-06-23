@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * @Author 张迁-zhangqian
@@ -30,5 +31,5 @@ public class MomentVo {
     private Integer star;
     private Integer starEnable;
     private Integer seeTimes;
-    private Integer momentCommentTimes;
+    private List<MomentCommentVo> momentCommentVoList;
 }

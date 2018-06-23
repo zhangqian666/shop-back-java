@@ -69,14 +69,7 @@ public class MomentsServiceImpl implements IMomentsService {
             List<MomentCommentVo> momentCommentVos = Lists.newArrayList();
             List<MomentsComment> byMomentsId = momentsCommentMapper.findByMomentsId(momentId);
             if (byMomentsId != null) {
-                for (MomentsComment mc : byMomentsId) {
-                    MomentCommentVo momentCommentVo = new MomentCommentVo();
-                    BeanUtils.copyProperties(mc, momentCommentVo);
-                    ShopUser shopUser = shopUserMapper.selectByPrimaryKey(momentCommentVo.getUserId());
-                    momentCommentVo.setUsername(shopUser.getUsername());
-                    momentCommentVo.setUserImage(shopUser.getImage());
-                    momentCommentVos.add(momentCommentVo);
-                }
+                assemMomentCommentVoList(byMomentsId, momentCommentVos);
             }
             momentsListVo.setMomentCommentVos(momentCommentVos);
         }
@@ -92,14 +85,16 @@ public class MomentsServiceImpl implements IMomentsService {
         } else {
             moments = momentsMapper.findByUserId(searchUid);
         }
-        List<MomentVo> momentCommentVos = Lists.newArrayList();
+        List<MomentVo> momentVos = Lists.newArrayList();
         for (Moments moment : moments) {
             MomentVo target = new MomentVo();
             BeanUtils.copyProperties(moment, target);
             {
                 //查找有多少评论
                 List<MomentsComment> byMomentsId = momentsCommentMapper.findByMomentsId(moment.getId());
-                target.setMomentCommentTimes(byMomentsId.size());
+                List<MomentCommentVo> momentCommentVos = Lists.newArrayList();
+                assemMomentCommentVoList(byMomentsId, momentCommentVos);
+                target.setMomentCommentVoList(momentCommentVos);
             }
             {
                 //查找该文章对应用户信息
@@ -118,11 +113,22 @@ public class MomentsServiceImpl implements IMomentsService {
                 }
 
             }
-            momentCommentVos.add(target);
+            momentVos.add(target);
         }
 
 
-        return ServerResponse.createBySuccess(momentCommentVos);
+        return ServerResponse.createBySuccess(momentVos);
+    }
+
+    private void assemMomentCommentVoList(List<MomentsComment> byMomentsId, List<MomentCommentVo> momentCommentVos) {
+        for (MomentsComment mc : byMomentsId) {
+            MomentCommentVo momentCommentVo = new MomentCommentVo();
+            BeanUtils.copyProperties(mc, momentCommentVo);
+            ShopUser momentCommentUser = shopUserMapper.selectByPrimaryKey(momentCommentVo.getUserId());
+            momentCommentVo.setUsername(momentCommentUser.getUsername());
+            momentCommentVo.setUserImage(momentCommentUser.getImage());
+            momentCommentVos.add(momentCommentVo);
+        }
     }
 
     @Override
