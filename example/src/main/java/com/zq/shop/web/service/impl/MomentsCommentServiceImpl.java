@@ -2,10 +2,12 @@ package com.zq.shop.web.service.impl;
 
 import com.zq.core.restful.ServerResponse;
 import com.zq.shop.web.bean.MomentsComment;
+import com.zq.shop.web.bean.ShopUser;
 import com.zq.shop.web.common.Const;
 import com.zq.shop.web.mappers.IDMapper;
 import com.zq.shop.web.mappers.MomentsCommentMapper;
 import com.zq.shop.web.mappers.MomentsMapper;
+import com.zq.shop.web.mappers.ShopUserMapper;
 import com.zq.shop.web.service.IMomentsCommentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,12 +32,20 @@ public class MomentsCommentServiceImpl implements IMomentsCommentService {
     @Autowired
     private IDMapper idMapper;
 
+    @Autowired
+    private ShopUserMapper shopUserMapper;
+
     public ServerResponse create(MomentsComment momentsComment) {
         Integer momentsCommentId = idMapper.findId(Const.IDType.MOMENTS_COMMENT_ID);
         momentsComment.setId(momentsCommentId);
         Integer userIdById = momentsMapper.findUserIdById(momentsComment.getMomentsId());
         if (userIdById == null) {
             return ServerResponse.createByErrorMessage("找不到该文章作者");
+        }
+
+        if (momentsComment.getReplyUserId() != null) {
+            ShopUser shopUser = shopUserMapper.selectByPrimaryKey(momentsComment.getReplyUserId());
+            if (shopUser != null) momentsComment.setReplyUserName(shopUser.getUsername());
         }
         momentsComment.setFollowId(userIdById);
         momentsCommentMapper.insert(momentsComment);

@@ -39,7 +39,7 @@ public class MomentsController {
     @PostMapping("/list")
     public ServerResponse<List<MomentVo>> momentsList(@AuthenticationPrincipal DefaultUserDetails defaultUserDetails,
                                                       Integer uid) {
-        return iMomentsService.list(defaultUserDetails.getUid(),uid);
+        return iMomentsService.list(defaultUserDetails.getUid(), uid);
 
     }
 
@@ -78,11 +78,13 @@ public class MomentsController {
     @PostMapping("/comment/create")
     public ServerResponse createMomentsComment(@AuthenticationPrincipal DefaultUserDetails defaultUserDetails,
                                                Integer momentsId,
+                                               Integer replyId,
                                                String content,
                                                String images) {
 
         MomentsComment momentsComment = new MomentsComment();
         momentsComment.setUserId(defaultUserDetails.getUid());
+        momentsComment.setReplyUserId(replyId);
         momentsComment.setMomentsId(momentsId);
         momentsComment.setContent(content);
         momentsComment.setImages(images);
