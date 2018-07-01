@@ -54,7 +54,9 @@ public interface MomentsCommentMapper {
      */
     int updateByPrimaryKey(MomentsComment record);
 
-    List<MomentsComment> findByMomentsId(@Param("momentsId")Integer momentsId);
+    int updateByPrimaryKeyWithBLOBs(MomentsComment record);
+
+    List<MomentsComment> findByMomentsId(@Param("momentsId") Integer momentsId);
 
 
 }
