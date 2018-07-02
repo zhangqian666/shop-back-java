@@ -110,8 +110,9 @@ public class ProductServiceImpl implements IProductService {
 
             if (product.getId() != null) {
                 ShopUser shopUser = shopUserMapper.selectByPrimaryKey(userId);
-                if (product.getUserId().intValue() == userId.intValue() || shopUser.getRole() == 0 || shopUser.getRole() == 1) {
-                    int rowCount = productMapper.updateByPrimaryKey(product);
+                Product localProduct = productMapper.selectByPrimaryKey(product.getId());
+                if (localProduct.getUserId().intValue() == userId.intValue() || shopUser.getRole() == 0 || shopUser.getRole() == 1) {
+                    int rowCount = productMapper.updateByPrimaryKeySelective(product);
                     if (rowCount > 0) {
                         return ServerResponse.createBySuccessMessage("更新产品成功");
                     }
