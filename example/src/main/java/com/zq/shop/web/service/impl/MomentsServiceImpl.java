@@ -85,6 +85,10 @@ public class MomentsServiceImpl implements IMomentsService {
         } else {
             moments = momentsMapper.findByUserId(searchUid);
         }
+        for (Moments ms : moments) {
+            ms.setSeeTimes(ms.getSeeTimes() + 1);
+            momentsMapper.updateByPrimaryKeySelective(ms);
+        }
         List<MomentVo> momentVos = Lists.newArrayList();
         for (Moments moment : moments) {
             MomentVo target = new MomentVo();
