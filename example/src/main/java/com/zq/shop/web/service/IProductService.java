@@ -27,4 +27,5 @@ public interface IProductService {
 
     ServerResponse<List<ProductVo>> searchProduct(String productName, Integer productId, int pageNum, int pageSize);
 
+    ServerResponse getProductListByUser(Integer userId, int i, int i1);
 }

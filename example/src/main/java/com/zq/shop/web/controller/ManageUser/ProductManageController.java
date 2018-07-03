@@ -42,9 +42,13 @@ public class ProductManageController {
 
     @ApiOperation("商品列表")
     @PostMapping("/list")
-    public ServerResponse list(@AuthenticationPrincipal DefaultUserDetails defaultUserDetails) {
+    public ServerResponse list(@AuthenticationPrincipal DefaultUserDetails defaultUserDetails, Integer userId) {
+        if (userId != null) {
+            return iProductService.getProductListByUser(userId, 0, 0);
+        }
         return iProductService.getProductList(defaultUserDetails.getUid(), 0, 0);
     }
+
 
     @ApiOperation("商品创建或者更新")
     @PostMapping("/update")

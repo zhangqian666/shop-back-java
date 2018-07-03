@@ -163,6 +163,12 @@ public class ProductServiceImpl implements IProductService {
     }
 
     @Override
+    public ServerResponse getProductListByUser(Integer userId, int i, int i1) {
+        List<Product> products = productMapper.findByUserId(userId);
+        return ServerResponse.createBySuccess(assembleProductVos(products));
+    }
+
+    @Override
     public ServerResponse<List<ProductVo>> searchProduct(String productName, Integer productId, int pageNum, int pageSize) {
         List<Product> products = productMapper.findByNameLikeOrIdOnSale(productName, productId);
         return ServerResponse.createBySuccess(assembleProductVos(products));
