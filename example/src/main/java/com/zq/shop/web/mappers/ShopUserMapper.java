@@ -1,7 +1,8 @@
 package com.zq.shop.web.mappers;
-
 import com.zq.shop.web.bean.ShopUser;
 import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 public interface ShopUserMapper {
     /**
@@ -61,5 +62,8 @@ public interface ShopUserMapper {
     ShopUser findOneByPhone(@Param("phone") String phone);
 
     ShopUser findOneByEmail(@Param("email") String email);
+    List<ShopUser> find();
+
+
 
 }

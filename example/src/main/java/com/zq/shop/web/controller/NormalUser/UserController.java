@@ -106,4 +106,8 @@ public class UserController {
         return iShopUserService.updateInfo(shopUser, defaultUserDetails.getUid());
     }
 
+
+
+
+
 }

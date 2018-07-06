@@ -14,6 +14,7 @@ public interface IShopUserService {
     ServerResponse register(ShopUser shopUser);
 
     ServerResponse<ShopUser> getUserInfo(String username);
+
     ServerResponse<ShopUser> getUserInfo(Integer userId);
 
     ServerResponse updateUserImage(String uploadFile, Integer userId);
@@ -21,4 +22,8 @@ public interface IShopUserService {
     ServerResponse updateUserPassword(String password, Integer userId);
 
     ServerResponse updateInfo(ShopUser username, Integer uid);
+
+    ServerResponse manageList(Integer uid);
+
+    ServerResponse manageUpdateRole(Integer uid, Integer userId, Integer role);
 }

@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * @Author 张迁-zhangqian
  * @Data 2018/4/21 下午2:34
@@ -129,5 +131,42 @@ public class ShopUserServiceImpl implements IShopUserService {
             return ServerResponse.createByErrorMessage("修改信息失败");
         }
         return ServerResponse.createBySuccessMessage("修改名称成功");
+    }
+
+    @Override
+    public ServerResponse manageList(Integer uid) {
+        ShopUser shopUser = shopUserMapper.selectByPrimaryKey(uid);
+        if (shopUser == null) {
+            return ServerResponse.createByErrorMessage("该用户不存在");
+        }
+        if (shopUser.getRole() != 1 && shopUser.getRole() != 0) {
+            return ServerResponse.createByErrorMessage("该用户没有权限");
+        }
+
+        List<ShopUser> shopUserList = shopUserMapper.find();
+        return ServerResponse.createBySuccess(shopUserList);
+    }
+
+    @Override
+    public ServerResponse manageUpdateRole(Integer uid, Integer userId, Integer role) {
+        ShopUser shopUser = shopUserMapper.selectByPrimaryKey(uid);
+        if (shopUser == null) {
+            return ServerResponse.createByErrorMessage("该用户不存在");
+        }
+        if (shopUser.getRole() != 0) {
+            return ServerResponse.createByErrorMessage("该用户没有权限");
+        }
+        if (role == 0) {
+            return ServerResponse.createByErrorMessage("不能修改为该身份");
+        }
+        ShopUser updateShopUser = new ShopUser();
+        updateShopUser.setUid(userId);
+        updateShopUser.setRole(role);
+
+        int i = shopUserMapper.updateByPrimaryKeySelective(updateShopUser);
+        if (i > 0) {
+            return ServerResponse.createBySuccessMessage("修改身份成功");
+        }
+        return ServerResponse.createByErrorMessage("修改身份失败");
     }
 }
