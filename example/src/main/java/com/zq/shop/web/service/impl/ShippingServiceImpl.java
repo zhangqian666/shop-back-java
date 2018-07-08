@@ -98,9 +98,9 @@ public class ShippingServiceImpl implements IShippingService {
         List<Address> addresses;
         if (level != null) {
             addresses = addressMapper.findByLevelAndShengOrDi(
-                    String.format("%s", level),
-                    level == 3 || level == 2 ? shengcode : null,
-                    level == 3 ? dicode : null);
+                    String.format("%s", level + 1),
+                    level == 1 || level == 2 ? shengcode : null,
+                    level == 2 ? dicode : null);
             return ServerResponse.createBySuccess(addresses);
         }
         return ServerResponse.createByErrorMessage("level 参数缺少");
