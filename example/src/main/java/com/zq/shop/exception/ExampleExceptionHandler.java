@@ -27,6 +27,7 @@ public class ExampleExceptionHandler {
         } else {
             code = 500;
         }
+        e.printStackTrace();
         return ServerResponse.createByErrorCodeMessage(code, e.getClass().getSimpleName() + ":" + e.getMessage());
     }
 }
