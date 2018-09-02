@@ -28,6 +28,11 @@ public class ExampleExceptionHandler {
             code = 500;
         }
         e.printStackTrace();
-        return ServerResponse.createByErrorCodeMessage(code, e.getClass().getSimpleName() + ":" + e.getMessage());
+        return ServerResponse.createByErrorCodeMessage(code,
+
+                e.getClass().getSimpleName() + ";\n" +
+                        "local : " + e.getLocalizedMessage() + ";\n" +
+                        "string : " + e.toString() + ";\n" +
+                        "message : " + e.getMessage());
     }
 }
