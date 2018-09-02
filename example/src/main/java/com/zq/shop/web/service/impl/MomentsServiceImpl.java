@@ -78,7 +78,7 @@ public class MomentsServiceImpl implements IMomentsService {
 
     public ServerResponse<List<MomentVo>> list(Integer uid, Integer searchUid) {
         //排序实现: 数据库字段 + " desc" 或 数据库字段 + " asc"
-        PageHelper.startPage(0, 10, "id desc");
+        PageHelper.startPage(0, 1000, "id desc");
         List<Moments> moments;
         if (searchUid == null) {
             moments = momentsMapper.find();

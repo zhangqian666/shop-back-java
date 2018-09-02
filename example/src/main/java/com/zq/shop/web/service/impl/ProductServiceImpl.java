@@ -53,7 +53,7 @@ public class ProductServiceImpl implements IProductService {
 
         if (StringUtils.isBlank(keyword) && categoryId == null) {
             //排序实现: 数据库字段 + " desc" 或 数据库字段 + " asc"
-            PageHelper.startPage(0, 10, "id desc");
+            PageHelper.startPage(0, 1000, "id desc");
             List<Product> products = productMapper.selectByNameAndCategoryIdsOnSale(null, null);
             return ServerResponse.createBySuccess(assembleProductVos(products));
         }
