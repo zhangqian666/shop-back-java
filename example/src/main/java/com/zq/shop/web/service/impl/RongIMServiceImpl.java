@@ -66,7 +66,7 @@ public class RongIMServiceImpl implements IRongIMService {
         UserModel user = new UserModel()
                 .setId(shopUser.getUid().toString())
                 .setName(shopUser.getUsername())
-                .setPortrait("http://39.106.46.79/images/product.png");
+                .setPortrait("http://zack-image.oss-cn-beijing.aliyuncs.com/57d1751a-da87-4f9c-be05-8a37a56ad473.jpeg");
         TokenResult result = null;
         try {
             result = User.register(user);

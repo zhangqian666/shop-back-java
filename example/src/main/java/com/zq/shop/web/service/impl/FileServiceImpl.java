@@ -1,6 +1,8 @@
 package com.zq.shop.web.service.impl;
 
-import com.aliyun.oss.OSSClient;
+import com.aliyun.oss.ClientBuilderConfiguration;
+import com.aliyun.oss.OSS;
+import com.aliyun.oss.OSSClientBuilder;
 import com.zq.core.restful.ServerResponse;
 import com.zq.shop.web.common.Const;
 import com.zq.shop.web.service.IFileService;
@@ -40,6 +42,7 @@ public class FileServiceImpl implements IFileService {
             }
             File targetFile = new File(path, uploadFileName);
             file.transferTo(targetFile);
+
             aliUpFile(targetFile, uploadFileName);
         } catch (IOException e) {
             e.printStackTrace();
@@ -81,13 +84,15 @@ public class FileServiceImpl implements IFileService {
 
     private void aliUpFile(File file, String filename) {
         // endpoint以杭州为例，其它region请按实际情况填写。
-        String endpoint = "https://oss-cn-beijing-internal.aliyuncs.com";
+        String endpoint = "https://oss-cn-beijing.aliyuncs.com";
         // 阿里云主账号AccessKey拥有所有API的访问权限，风险很高。强烈建议您创建并使用RAM账号进行API访问或日常运维，请登录 https://ram.console.aliyun.com 创建RAM账号。
         String accessKeyId = "LTAI0KjgIKFUwRfz";
         String accessKeySecret = "yOWp1p0kuMLAQSCdU5q3NevDea0FXs";
         // 创建OSSClient实例。
-        OSSClient ossClient = new OSSClient(endpoint, accessKeyId, accessKeySecret);
-
+        ClientBuilderConfiguration conf = new ClientBuilderConfiguration();
+        conf.setConnectionTimeout(5000);
+        conf.setMaxErrorRetry(3);
+        OSS ossClient = new OSSClientBuilder().build(endpoint, accessKeyId, accessKeySecret,conf);
 
         ossClient.putObject("zack-image", filename, file);
         // 关闭client。

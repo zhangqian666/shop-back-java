@@ -53,7 +53,7 @@ public class ShopUserServiceImpl implements IShopUserService {
             shopUser.setEmail("");
             shopUser.setSex(0);
             shopUser.setType(0);
-            shopUser.setImage("http://39.106.46.79/images/product.png");
+            shopUser.setImage("http://zack-image.oss-cn-beijing.aliyuncs.com/57d1751a-da87-4f9c-be05-8a37a56ad473.jpeg");
         }
         int resultCount = shopUserMapper.insert(shopUser);
         if (resultCount == 0) {
